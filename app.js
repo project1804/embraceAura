@@ -18,6 +18,8 @@ const heartRateDisplay = document.getElementById("heartRateDisplay");
 const stressDisplay = document.getElementById("stressLevelDisplay");
 const lastUpdatedEl = document.getElementById("lastUpdated");
 const tempStatus = document.getElementById("tempStatus");
+const heartStatus = document.getElementById("heartStatus");
+const stressStatus = document.getElementById("stressStatus");
 const suggestionCard = document.getElementById("suggestionCard");
 
 const careTemp = document.getElementById("careTemp");
@@ -37,10 +39,9 @@ const countdownEl = document.getElementById("countdownTimer");
 
 // ======== STATE ========
 let alertCount = 0;
-let highTempStart = null;
-let highHeartStart = null;
-let highStressStart = null;
+let highStart = null; // shared start time for ANY high metric
 let countdownTimer = null;
+let highMetrics = [];
 
 const HIGH_TEMP_THRESHOLD = 37.8;
 const HIGH_HEART_THRESHOLD = 100;
@@ -72,12 +73,18 @@ function updateMomDashboard(data) {
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 
-  if (data.temperature > HIGH_TEMP_THRESHOLD) {
-    tempStatus.textContent = "High Temperature";
-    tempStatus.classList.add("alert");
+  updateStatus(tempStatus, data.temperature > HIGH_TEMP_THRESHOLD, "High Temperature");
+  updateStatus(heartStatus, data.heartRate > HIGH_HEART_THRESHOLD, "High Heart Rate");
+  updateStatus(stressStatus, data.stressLevel > HIGH_STRESS_THRESHOLD, "High Stress Level");
+}
+
+function updateStatus(el, isHigh, highText) {
+  if (isHigh) {
+    el.textContent = highText;
+    el.classList.add("alert");
   } else {
-    tempStatus.textContent = "Normal";
-    tempStatus.classList.remove("alert");
+    el.textContent = "Normal";
+    el.classList.remove("alert");
   }
 }
 
@@ -92,49 +99,48 @@ function updateCaregiverDashboard(data) {
 function checkAlerts(temp, heart, stress, isSim = false) {
   const now = Date.now();
 
-  handleAlert("Temperature", temp, HIGH_TEMP_THRESHOLD, now, isSim, highTempStart, v => highTempStart = v);
-  handleAlert("Heart Rate", heart, HIGH_HEART_THRESHOLD, now, isSim, highHeartStart, v => highHeartStart = v);
-  handleAlert("Stress Level", stress, HIGH_STRESS_THRESHOLD, now, isSim, highStressStart, v => highStressStart = v);
-}
+  highMetrics = [];
+  if (temp > HIGH_TEMP_THRESHOLD) highMetrics.push("Temperature");
+  if (heart > HIGH_HEART_THRESHOLD) highMetrics.push("Heart Rate");
+  if (stress > HIGH_STRESS_THRESHOLD) highMetrics.push("Stress Level");
 
-function handleAlert(type, value, threshold, now, isSim, startTime, setStartTime) {
-  if (isSim && value > threshold) {
+  if (isSim && highMetrics.length) {
     showSuggestions();
-    pushAlert(`Simulation: ${type} ${value}`);
+    pushAlert(`Simulation: High ${highMetrics.join(", ")}`);
     return;
   }
 
-  if (!isSim && value > threshold) {
-    if (!startTime) {
-      setStartTime(now);
-      startCountdown(HIGH_ALERT_DURATION, type);
-    } else if (now - startTime >= HIGH_ALERT_DURATION) {
+  if (highMetrics.length) {
+    if (!highStart) {
+      highStart = now;
+      startCountdown(HIGH_ALERT_DURATION, highMetrics);
+    } else if (now - highStart >= HIGH_ALERT_DURATION) {
       stopCountdown();
       showSuggestions();
-      pushAlert(`${type} above ${threshold} for 1 min`);
-      setStartTime(null);
+      pushAlert(`High ${highMetrics.join(", ")} for 1 minute`);
+      highStart = null;
     }
   } else {
-    setStartTime(null);
+    highStart = null;
     hideSuggestions();
     stopCountdown();
   }
 }
 
 // ======== COUNTDOWN FUNCTIONS ========
-function startCountdown(duration, type) {
+function startCountdown(duration, metrics) {
   let remaining = Math.ceil(duration / 1000);
-  updateCountdownDisplay(remaining, type);
+  stopCountdown(); // reset if running
+  updateCountdownDisplay(remaining, metrics);
 
-  stopCountdown();
   countdownTimer = setInterval(() => {
     remaining--;
     if (remaining <= 0) {
       stopCountdown();
-      updateCountdownDisplay(0, type);
+      updateCountdownDisplay(0, metrics);
       return;
     }
-    updateCountdownDisplay(remaining, type);
+    updateCountdownDisplay(remaining, metrics);
   }, 1000);
 }
 
@@ -144,9 +150,10 @@ function stopCountdown() {
   if (countdownEl) countdownEl.textContent = "";
 }
 
-function updateCountdownDisplay(seconds, type) {
+function updateCountdownDisplay(seconds, metrics) {
   if (!countdownEl) return;
-  countdownEl.textContent = seconds > 0 ? `${type} alert in ${seconds}s` : '';
+  countdownEl.textContent = seconds > 0 ? 
+    `High ${metrics.join(", ")} — alert in ${seconds}s` : '';
 }
 
 // ======== SUGGESTIONS & ALERTS ========
