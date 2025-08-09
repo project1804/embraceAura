@@ -56,7 +56,9 @@ db.ref("sensorData").on("value", snapshot => {
 
 // ======== UPDATE UI FUNCTIONS ========
 function updateMomDashboard(data) {
-  tempDisplay.textContent = `${data.temperature.toFixed(1)} °C`;
+  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+  careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+
   heartRateDisplay.textContent = `${data.heartRate} bpm`;
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
@@ -71,7 +73,9 @@ function updateMomDashboard(data) {
 }
 
 function updateCaregiverDashboard(data) {
-  careTemp.textContent = `${data.temperature.toFixed(1)} °C`;
+  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+  careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+
   careHR.textContent = `${data.heartRate} bpm`;
   careStress.textContent = data.stressLevel;
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
@@ -93,7 +97,7 @@ function checkTemperatureAlert(temp, isSim = false) {
       highTempStart = now;
     } else if (now - highTempStart >= HIGH_TEMP_DURATION) {
       showSuggestions();
-      pushAlert("Temperature above 37.8°C for 1 min");
+      pushAlert("Temperature above 37.8Â°C for 1 min");
       highTempStart = null; 
     }
   } else {
@@ -117,7 +121,7 @@ function pushAlert(message) {
 
   const alertItem = document.createElement("div");
   alertItem.className = "card alert";
-  alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
+  alertItem.textContent = `${new Date().toLocaleTimeString()} â€” ${message}`;
   alertsList.prepend(alertItem);
 }
 
@@ -179,3 +183,4 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
+
