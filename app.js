@@ -1,6 +1,3 @@
-// ======== UTF-8 SUPPORT ========
-document.charset = "UTF-8";
-
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
   apiKey: "AIzaSyDojSgXigZkJLLji5VVkKFFxfoSUPH-s7I",
@@ -18,8 +15,6 @@ const heartRateDisplay = document.getElementById("heartRateDisplay");
 const stressDisplay = document.getElementById("stressLevelDisplay");
 const lastUpdatedEl = document.getElementById("lastUpdated");
 const tempStatus = document.getElementById("tempStatus");
-const heartStatus = document.getElementById("heartStatus");
-const stressStatus = document.getElementById("stressStatus");
 const suggestionCard = document.getElementById("suggestionCard");
 
 const careTemp = document.getElementById("careTemp");
@@ -35,18 +30,14 @@ const simHeart = document.getElementById("simHeart");
 const simStress = document.getElementById("simStress");
 const simPush = document.getElementById("simPush");
 
-const countdownEl = document.getElementById("countdownTimer");
+const countdownEl = document.getElementById("countdownTimer"); // Ensure this exists in your HTML
 
 // ======== STATE ========
 let alertCount = 0;
-let highStart = null; // shared start time for ANY high metric
+let highTempStart = null;
 let countdownTimer = null;
-let highMetrics = [];
-
-const HIGH_TEMP_THRESHOLD = 37.8;
-const HIGH_HEART_THRESHOLD = 100;
-const HIGH_STRESS_THRESHOLD = 70;
-const HIGH_ALERT_DURATION = 60 * 1000; // 1 min
+const HIGH_TEMP_THRESHOLD = 37.8; 
+const HIGH_TEMP_DURATION = 60 * 1000; // 1 min for live data
 
 // ======== NAVIGATION ========
 document.querySelectorAll(".nav-btn").forEach(btn => {
@@ -63,7 +54,7 @@ db.ref("sensorData").on("value", snapshot => {
 
   updateMomDashboard(data);
   updateCaregiverDashboard(data);
-  checkAlerts(data.temperature, data.heartRate, data.stressLevel, false);
+  checkTemperatureAlert(data.temperature, false); // live data mode
 });
 
 // ======== UPDATE UI FUNCTIONS ========
@@ -72,19 +63,13 @@ function updateMomDashboard(data) {
   heartRateDisplay.textContent = `${data.heartRate} bpm`;
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
-
-  updateStatus(tempStatus, data.temperature > HIGH_TEMP_THRESHOLD, "High Temperature");
-  updateStatus(heartStatus, data.heartRate > HIGH_HEART_THRESHOLD, "High Heart Rate");
-  updateStatus(stressStatus, data.stressLevel > HIGH_STRESS_THRESHOLD, "High Stress Level");
-}
-
-function updateStatus(el, isHigh, highText) {
-  if (isHigh) {
-    el.textContent = highText;
-    el.classList.add("alert");
+  
+  if (data.temperature > HIGH_TEMP_THRESHOLD) {
+    tempStatus.textContent = "High Temperature";
+    tempStatus.classList.add("alert");
   } else {
-    el.textContent = "Normal";
-    el.classList.remove("alert");
+    tempStatus.textContent = "Normal";
+    tempStatus.classList.remove("alert");
   }
 }
 
@@ -95,52 +80,48 @@ function updateCaregiverDashboard(data) {
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
-// ======== ALERT CHECKING ========
-function checkAlerts(temp, heart, stress, isSim = false) {
+function checkTemperatureAlert(temp, isSim = false) {
   const now = Date.now();
 
-  highMetrics = [];
-  if (temp > HIGH_TEMP_THRESHOLD) highMetrics.push("Temperature");
-  if (heart > HIGH_HEART_THRESHOLD) highMetrics.push("Heart Rate");
-  if (stress > HIGH_STRESS_THRESHOLD) highMetrics.push("Stress Level");
-
-  if (isSim && highMetrics.length) {
+  // Simulation triggers instantly
+  if (isSim && temp > HIGH_TEMP_THRESHOLD) {
     showSuggestions();
-    pushAlert(`Simulation: High ${highMetrics.join(", ")}`);
+    pushAlert(`Simulation: Temperature ${temp.toFixed(1)} \u00B0C`);
     return;
   }
 
-  if (highMetrics.length) {
-    if (!highStart) {
-      highStart = now;
-      startCountdown(HIGH_ALERT_DURATION, highMetrics);
-    } else if (now - highStart >= HIGH_ALERT_DURATION) {
+  // Live data: wait 1 minute
+  if (!isSim && temp > HIGH_TEMP_THRESHOLD) {
+    if (!highTempStart) {
+      highTempStart = now;
+      startCountdown(HIGH_TEMP_DURATION);
+    } else if (now - highTempStart >= HIGH_TEMP_DURATION) {
       stopCountdown();
       showSuggestions();
-      pushAlert(`High ${highMetrics.join(", ")} for 1 minute`);
-      highStart = null;
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 1 min`);
+      highTempStart = null;
     }
   } else {
-    highStart = null;
+    highTempStart = null;
     hideSuggestions();
     stopCountdown();
   }
 }
 
 // ======== COUNTDOWN FUNCTIONS ========
-function startCountdown(duration, metrics) {
+function startCountdown(duration) {
   let remaining = Math.ceil(duration / 1000);
-  stopCountdown(); // reset if running
-  updateCountdownDisplay(remaining, metrics);
+  updateCountdownDisplay(remaining);
 
+  stopCountdown(); // clear if already running
   countdownTimer = setInterval(() => {
     remaining--;
     if (remaining <= 0) {
       stopCountdown();
-      updateCountdownDisplay(0, metrics);
+      updateCountdownDisplay(0);
       return;
     }
-    updateCountdownDisplay(remaining, metrics);
+    updateCountdownDisplay(remaining);
   }, 1000);
 }
 
@@ -150,10 +131,9 @@ function stopCountdown() {
   if (countdownEl) countdownEl.textContent = "";
 }
 
-function updateCountdownDisplay(seconds, metrics) {
+function updateCountdownDisplay(seconds) {
   if (!countdownEl) return;
-  countdownEl.textContent = seconds > 0 ? 
-    `High ${metrics.join(", ")} — alert in ${seconds}s` : '';
+  countdownEl.textContent = seconds > 0 ? `Alert in ${seconds}s` : '';
 }
 
 // ======== SUGGESTIONS & ALERTS ========
@@ -190,7 +170,7 @@ function simulateData() {
   } else {
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkAlerts(data.temperature, data.heartRate, data.stressLevel, true);
+    checkTemperatureAlert(data.temperature, true); // instant suggestion for sim
   }
 }
 window.simulateData = simulateData;
@@ -199,7 +179,7 @@ window.simulateData = simulateData;
 function toggleMusic() {
   const audio = document.getElementById("calmAudio");
   if (audio && audio.paused) {
-    audio.play().catch(()=>{});
+    audio.play().catch(()=>{}); // ignore play errors
   } else if (audio) {
     audio.pause();
   }
