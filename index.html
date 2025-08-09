@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
   <title>EmbraceAura</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
   <div class="navbar">
@@ -15,31 +16,33 @@
   <!-- MOM DASHBOARD -->
   <div id="momPanel" class="panel mom-panel active">
     <div class="card greeting">
+      <!-- Changed to your own image file -->
+      <img src="mom-illustration.jpg" alt="Mom Illustration" class="illustration">
       <h2>Hi Aishad, how are you feeling?</h2>
       <p class="subtext">Breathe and smile</p>
     </div>
 
     <div class="card wellness-overview">
-      <h3>Wellness Overview</h3>
-      <p>Heart Rate: <span id="heartRateDisplay">-- bpm</span></p>
-      <p>Stress Level: <span id="stressLevelDisplay">--</span></p>
-      <p>Temperature: <span id="temperatureDisplay">-- °C</span></p>
+      <h3><i class="fas fa-leaf"></i> Wellness Overview</h3>
+      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="heartRateDisplay">-- bpm</span></p>
+      <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
+      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
       <p>Status: <span id="tempStatus">Normal</span></p>
       <small id="lastUpdated">Updated: --</small>
     </div>
 
     <!-- Suggestion Card -->
     <div id="suggestionCard" class="card suggestions" style="display:none;">
-      <h3>Suggestions (Wellness Tool)</h3>
+      <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
-      <button onclick="toggleMusic()">Play Calming Music</button>
-      <button onclick="startBreathing()">Guided Breathing</button>
-      <button onclick="showAffirmation()">Show Affirmation</button>
+      <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play Calming Music</button>
+      <button onclick="startBreathing()"><i class="fas fa-wind"></i> Guided Breathing</button>
+      <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
     </div>
 
     <!-- Simulation Tool -->
     <div class="card">
-      <h3>Simulation Tool</h3>
+      <h3><i class="fas fa-flask"></i> Simulation Tool</h3>
       <label>Temperature (°C): <input type="number" id="simTemp" step="0.1" value="37.0"></label><br>
       <label>Heart Rate (bpm): <input type="number" id="simHeart" value="80"></label><br>
       <label>Stress Level: <input type="number" id="simStress" value="20"></label><br>
@@ -55,15 +58,17 @@
   <!-- CAREGIVER DASHBOARD -->
   <div id="caregiverPanel" class="panel caregiver-panel">
     <div class="card">
+      <!-- Changed to your own image file -->
+      <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
       <h2>Caregiver Dashboard</h2>
-      <p>Temperature: <span id="careTemp">-- °C</span></p>
-      <p>Heart Rate: <span id="careHR">-- bpm</span></p>
-      <p>Stress Level: <span id="careStress">--</span></p>
+      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
+      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
+      <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
       <small id="careUpdated">Updated: --</small>
     </div>
 
     <div class="card">
-      <h3>Alerts <span id="alertBadge" class="badge" style="display:none;">0</span></h3>
+      <h3><i class="fas fa-bell"></i> Alerts <span id="alertBadge" class="badge" style="display:none;">0</span></h3>
       <div id="alertsList" class="alerts">
         <div class="muted">No alerts yet.</div>
       </div>
@@ -78,4 +83,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
