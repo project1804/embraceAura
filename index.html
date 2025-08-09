@@ -6,6 +6,24 @@
   <title>EmbraceAura</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* Circular image style */
+    .illustration {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 10px;
+    }
+    /* Countdown styling */
+    .countdown {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
   <div class="navbar">
@@ -16,10 +34,10 @@
   <!-- MOM DASHBOARD -->
   <div id="momPanel" class="panel mom-panel active">
     <div class="card greeting">
-      <!-- Changed to your own image file -->
       <img src="mom-illustration.jpg" alt="Mom Illustration" class="illustration">
       <h2>Hi Aishad, how are you feeling?</h2>
       <p class="subtext">Breathe and smile</p>
+      <div class="countdown">Next update in: <span id="momCountdown">60</span>s</div>
     </div>
 
     <div class="card wellness-overview">
@@ -31,7 +49,6 @@
       <small id="lastUpdated">Updated: --</small>
     </div>
 
-    <!-- Suggestion Card -->
     <div id="suggestionCard" class="card suggestions" style="display:none;">
       <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
@@ -40,7 +57,6 @@
       <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
     </div>
 
-    <!-- Simulation Tool -->
     <div class="card">
       <h3><i class="fas fa-flask"></i> Simulation Tool</h3>
       <label>Temperature (°C): <input type="number" id="simTemp" step="0.1" value="37.0"></label><br>
@@ -58,13 +74,13 @@
   <!-- CAREGIVER DASHBOARD -->
   <div id="caregiverPanel" class="panel caregiver-panel">
     <div class="card">
-      <!-- Changed to your own image file -->
       <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
       <h2>Caregiver Dashboard</h2>
       <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
       <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
       <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
       <small id="careUpdated">Updated: --</small>
+      <div class="countdown">Next update in: <span id="careCountdown">60</span>s</div>
     </div>
 
     <div class="card">
@@ -80,6 +96,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js" charset="UTF-8"></script>
 </body>
 </html>
