@@ -30,9 +30,12 @@ const simHeart = document.getElementById("simHeart");
 const simStress = document.getElementById("simStress");
 const simPush = document.getElementById("simPush");
 
+const countdownEl = document.getElementById("countdownTimer"); // Ensure this exists in your HTML
+
 // ======== STATE ========
 let alertCount = 0;
 let highTempStart = null;
+let countdownTimer = null;
 const HIGH_TEMP_THRESHOLD = 37.8; 
 const HIGH_TEMP_DURATION = 60 * 1000; // 1 min for live data
 
@@ -57,8 +60,6 @@ db.ref("sensorData").on("value", snapshot => {
 // ======== UPDATE UI FUNCTIONS ========
 function updateMomDashboard(data) {
   tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
-  careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
-
   heartRateDisplay.textContent = `${data.heartRate} bpm`;
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
@@ -73,9 +74,7 @@ function updateMomDashboard(data) {
 }
 
 function updateCaregiverDashboard(data) {
-  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
   careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
-
   careHR.textContent = `${data.heartRate} bpm`;
   careStress.textContent = data.stressLevel;
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
@@ -84,28 +83,60 @@ function updateCaregiverDashboard(data) {
 function checkTemperatureAlert(temp, isSim = false) {
   const now = Date.now();
 
-  // Simulation triggers instantly for easier testing
+  // Simulation triggers instantly
   if (isSim && temp > HIGH_TEMP_THRESHOLD) {
     showSuggestions();
-    pushAlert("Simulation: Temperature above threshold");
+    pushAlert(`Simulation: Temperature ${temp.toFixed(1)} \u00B0C`);
     return;
   }
 
-  // Live data requires 1 min
-  if (temp > HIGH_TEMP_THRESHOLD) {
+  // Live data: wait 1 minute
+  if (!isSim && temp > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) {
       highTempStart = now;
+      startCountdown(HIGH_TEMP_DURATION);
     } else if (now - highTempStart >= HIGH_TEMP_DURATION) {
+      stopCountdown();
       showSuggestions();
-      pushAlert("Temperature above 37.8°C for 1 min");
-      highTempStart = null; 
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 1 min`);
+      highTempStart = null;
     }
   } else {
     highTempStart = null;
     hideSuggestions();
+    stopCountdown();
   }
 }
 
+// ======== COUNTDOWN FUNCTIONS ========
+function startCountdown(duration) {
+  let remaining = Math.ceil(duration / 1000);
+  updateCountdownDisplay(remaining);
+
+  stopCountdown(); // clear if already running
+  countdownTimer = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      stopCountdown();
+      updateCountdownDisplay(0);
+      return;
+    }
+    updateCountdownDisplay(remaining);
+  }, 1000);
+}
+
+function stopCountdown() {
+  if (countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = null;
+  if (countdownEl) countdownEl.textContent = "";
+}
+
+function updateCountdownDisplay(seconds) {
+  if (!countdownEl) return;
+  countdownEl.textContent = seconds > 0 ? `Alert in ${seconds}s` : '';
+}
+
+// ======== SUGGESTIONS & ALERTS ========
 function showSuggestions() {
   suggestionCard.style.display = "block";
 }
@@ -139,7 +170,7 @@ function simulateData() {
   } else {
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkTemperatureAlert(data.temperature, true); //  instant suggestion for sim
+    checkTemperatureAlert(data.temperature, true); // instant suggestion for sim
   }
 }
 window.simulateData = simulateData;
@@ -147,9 +178,9 @@ window.simulateData = simulateData;
 // ======== TOOL FUNCTIONS ========
 function toggleMusic() {
   const audio = document.getElementById("calmAudio");
-  if (audio.paused) {
-    audio.play();
-  } else {
+  if (audio && audio.paused) {
+    audio.play().catch(()=>{}); // ignore play errors
+  } else if (audio) {
     audio.pause();
   }
 }
@@ -183,4 +214,3 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
-
