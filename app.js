@@ -107,7 +107,6 @@ function updateCaregiverDashboard(data) {
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
-// ======== ALERT CHECKING ========
 function checkAlerts(data, isSim = false) {
   const now = Date.now();
   const { temperature, stressLevel, heartRate } = data;
@@ -115,7 +114,7 @@ function checkAlerts(data, isSim = false) {
   let anyAlert = false;
 
   if (isSim) {
-    // Track start time for simulated high readings
+    // Simulated high readings timer logic
     if (temperature > HIGH_TEMP_THRESHOLD) {
       if (!simHighTempStart) simHighTempStart = now;
       else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
@@ -143,12 +142,16 @@ function checkAlerts(data, isSim = false) {
       }
     } else simHighHeartRateStart = null;
 
-    if (anyAlert) showSuggestions();
-    else hideSuggestions();
+    // Only show suggestions if a simulated alert has actually been triggered
+    if (anyAlert) {
+      showSuggestions();
+    } else {
+      hideSuggestions();
+    }
     return;
   }
 
-  // Real sensor logic
+  // ======== REAL SENSOR LOGIC ========
   if (temperature > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {
@@ -184,6 +187,7 @@ function checkAlerts(data, isSim = false) {
     stopCountdown();
   }
 }
+
 
 // ======== COUNTDOWN FUNCTIONS ========
 function startCountdown(duration) {
@@ -315,3 +319,4 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
+
