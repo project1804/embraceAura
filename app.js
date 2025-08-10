@@ -1,6 +1,6 @@
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
-  apiKey: "AIzaSyDojSgXigZkJLLji5VVkKFFxfoSUPH-s7I",
+  apiKey: "AIzaSyDojXgXigZkJLLji5VVkKFFxfoSUPH-s7I",
   authDomain: "embraceaura-4c3ca.firebaseapp.com",
   databaseURL: "https://embraceaura-4c3ca-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "embraceaura-4c3ca",
@@ -16,11 +16,9 @@ const stressDisplay = document.getElementById("stressLevelDisplay");
 const lastUpdatedEl = document.getElementById("lastUpdated");
 
 const tempStatus = document.getElementById("tempStatus");
-// Add these in your HTML with IDs stressStatus and heartRateStatus for this to work
 let stressStatus = document.getElementById("stressStatus");
 let heartRateStatus = document.getElementById("heartRateStatus");
 
-// If they don’t exist yet, create and insert them next to tempStatus for example:
 if (!stressStatus) {
   stressStatus = document.createElement("span");
   stressStatus.id = "stressStatus";
@@ -47,7 +45,7 @@ const simHeart = document.getElementById("simHeart");
 const simStress = document.getElementById("simStress");
 const simPush = document.getElementById("simPush");
 
-const countdownEl = document.getElementById("momCountdown"); // Using momCountdown from your HTML
+const countdownEl = document.getElementById("momCountdown");
 
 // ======== STATE ========
 let alertCount = 0;
@@ -56,10 +54,11 @@ let highStressStart = null;
 let highHeartRateStart = null;
 let countdownTimer = null;
 
-const HIGH_TEMP_THRESHOLD = 37.8; 
-const HIGH_STRESS_THRESHOLD = 70;   // Adjust as needed
-const HIGH_HEARTRATE_THRESHOLD = 100; // Adjust as needed
-const HIGH_ALERT_DURATION = 60 * 1000; // 1 minute duration
+// 5 minutes threshold
+const HIGH_TEMP_THRESHOLD = 37.8;
+const HIGH_STRESS_THRESHOLD = 70;
+const HIGH_HEARTRATE_THRESHOLD = 100;
+const HIGH_ALERT_DURATION = 5 * 60 * 1000; // 5 minutes
 
 // ======== NAVIGATION ========
 document.querySelectorAll(".nav-btn").forEach(btn => {
@@ -76,7 +75,7 @@ db.ref("sensorData").on("value", snapshot => {
 
   updateMomDashboard(data);
   updateCaregiverDashboard(data);
-  checkAlerts(data, false); // live data mode
+  checkAlerts(data, false);
 });
 
 // ======== UPDATE UI FUNCTIONS ========
@@ -86,32 +85,14 @@ function updateMomDashboard(data) {
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 
-  // Temperature status
-  if (data.temperature > HIGH_TEMP_THRESHOLD) {
-    tempStatus.textContent = "High Temperature";
-    tempStatus.classList.add("alert");
-  } else {
-    tempStatus.textContent = "Normal";
-    tempStatus.classList.remove("alert");
-  }
+  tempStatus.textContent = data.temperature > HIGH_TEMP_THRESHOLD ? "High Temperature" : "Normal";
+  tempStatus.classList.toggle("alert", data.temperature > HIGH_TEMP_THRESHOLD);
 
-  // Stress status
-  if (data.stressLevel > HIGH_STRESS_THRESHOLD) {
-    stressStatus.textContent = "High Stress";
-    stressStatus.classList.add("alert");
-  } else {
-    stressStatus.textContent = "Normal";
-    stressStatus.classList.remove("alert");
-  }
+  stressStatus.textContent = data.stressLevel > HIGH_STRESS_THRESHOLD ? "High Stress" : "Normal";
+  stressStatus.classList.toggle("alert", data.stressLevel > HIGH_STRESS_THRESHOLD);
 
-  // Heart Rate status
-  if (data.heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    heartRateStatus.textContent = "High Heart Rate";
-    heartRateStatus.classList.add("alert");
-  } else {
-    heartRateStatus.textContent = "Normal";
-    heartRateStatus.classList.remove("alert");
-  }
+  heartRateStatus.textContent = data.heartRate > HIGH_HEARTRATE_THRESHOLD ? "High Heart Rate" : "Normal";
+  heartRateStatus.classList.toggle("alert", data.heartRate > HIGH_HEARTRATE_THRESHOLD);
 }
 
 function updateCaregiverDashboard(data) {
@@ -128,7 +109,6 @@ function checkAlerts(data, isSim = false) {
 
   let anyAlert = false;
 
-  // Instant alerts in simulation mode
   if (isSim) {
     if (temperature > HIGH_TEMP_THRESHOLD) {
       pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C`);
@@ -147,39 +127,32 @@ function checkAlerts(data, isSim = false) {
     return;
   }
 
-  // Live data alerts with duration check
   if (temperature > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 1 min`);
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
       anyAlert = true;
       highTempStart = null;
     }
-  } else {
-    highTempStart = null;
-  }
+  } else highTempStart = null;
 
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
     if (!highStressStart) highStressStart = now;
     else if (now - highStressStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 1 min`);
+      pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
       anyAlert = true;
       highStressStart = null;
     }
-  } else {
-    highStressStart = null;
-  }
+  } else highStressStart = null;
 
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`);
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
       anyAlert = true;
       highHeartRateStart = null;
     }
-  } else {
-    highHeartRateStart = null;
-  }
+  } else highHeartRateStart = null;
 
   if (anyAlert) {
     showSuggestions();
@@ -195,7 +168,7 @@ function startCountdown(duration) {
   let remaining = Math.ceil(duration / 1000);
   updateCountdownDisplay(remaining);
 
-  stopCountdown(); // clear if already running
+  stopCountdown();
   countdownTimer = setInterval(() => {
     remaining--;
     if (remaining <= 0) {
@@ -252,22 +225,36 @@ function simulateData() {
   } else {
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkAlerts(data, true); // instant suggestion for simulation
+    checkAlerts(data, true);
   }
 }
 window.simulateData = simulateData;
 
-// ======== TOOL FUNCTIONS ========
+// ======== NEW: SIMULATE 5 MINUTES PASSED ========
+function simulateFiveMinutesPassed() {
+  showSuggestions();
+  pushAlert("Simulated: 5 minutes passed with high readings");
+}
+window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
+// ======== MUSIC FUNCTIONS ========
 function toggleMusic() {
   const audio = document.getElementById("calmAudio");
-  if (audio && audio.paused) {
-    audio.play().catch(() => { }); // ignore play errors
-  } else if (audio) {
+  const choice = document.getElementById("musicChoice").value;
+
+  if (audio.src.indexOf(choice) === -1) {
+    audio.src = choice;
+  }
+
+  if (audio.paused) {
+    audio.play().catch(() => {});
+  } else {
     audio.pause();
   }
 }
 window.toggleMusic = toggleMusic;
 
+// ======== TOOL FUNCTIONS ========
 function startBreathing() {
   alert("Guided breathing started.");
 }
