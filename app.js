@@ -14,7 +14,24 @@ const tempDisplay = document.getElementById("temperatureDisplay");
 const heartRateDisplay = document.getElementById("heartRateDisplay");
 const stressDisplay = document.getElementById("stressLevelDisplay");
 const lastUpdatedEl = document.getElementById("lastUpdated");
+
 const tempStatus = document.getElementById("tempStatus");
+// Add these in your HTML with IDs stressStatus and heartRateStatus for this to work
+let stressStatus = document.getElementById("stressStatus");
+let heartRateStatus = document.getElementById("heartRateStatus");
+
+// If they don’t exist yet, create and insert them next to tempStatus for example:
+if (!stressStatus) {
+  stressStatus = document.createElement("span");
+  stressStatus.id = "stressStatus";
+  tempStatus.parentElement.insertBefore(stressStatus, tempStatus.nextSibling);
+}
+if (!heartRateStatus) {
+  heartRateStatus = document.createElement("span");
+  heartRateStatus.id = "heartRateStatus";
+  tempStatus.parentElement.insertBefore(heartRateStatus, stressStatus.nextSibling);
+}
+
 const suggestionCard = document.getElementById("suggestionCard");
 
 const careTemp = document.getElementById("careTemp");
@@ -30,14 +47,19 @@ const simHeart = document.getElementById("simHeart");
 const simStress = document.getElementById("simStress");
 const simPush = document.getElementById("simPush");
 
-const countdownEl = document.getElementById("countdownTimer"); // Ensure this exists in your HTML
+const countdownEl = document.getElementById("momCountdown"); // Using momCountdown from your HTML
 
 // ======== STATE ========
 let alertCount = 0;
 let highTempStart = null;
+let highStressStart = null;
+let highHeartRateStart = null;
 let countdownTimer = null;
+
 const HIGH_TEMP_THRESHOLD = 37.8; 
-const HIGH_TEMP_DURATION = 60 * 1000; // 1 min for live data
+const HIGH_STRESS_THRESHOLD = 70;   // Adjust as needed
+const HIGH_HEARTRATE_THRESHOLD = 100; // Adjust as needed
+const HIGH_ALERT_DURATION = 60 * 1000; // 1 minute duration
 
 // ======== NAVIGATION ========
 document.querySelectorAll(".nav-btn").forEach(btn => {
@@ -54,7 +76,7 @@ db.ref("sensorData").on("value", snapshot => {
 
   updateMomDashboard(data);
   updateCaregiverDashboard(data);
-  checkTemperatureAlert(data.temperature, false); // live data mode
+  checkAlerts(data, false); // live data mode
 });
 
 // ======== UPDATE UI FUNCTIONS ========
@@ -63,13 +85,32 @@ function updateMomDashboard(data) {
   heartRateDisplay.textContent = `${data.heartRate} bpm`;
   stressDisplay.textContent = data.stressLevel;
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
-  
+
+  // Temperature status
   if (data.temperature > HIGH_TEMP_THRESHOLD) {
     tempStatus.textContent = "High Temperature";
     tempStatus.classList.add("alert");
   } else {
     tempStatus.textContent = "Normal";
     tempStatus.classList.remove("alert");
+  }
+
+  // Stress status
+  if (data.stressLevel > HIGH_STRESS_THRESHOLD) {
+    stressStatus.textContent = "High Stress";
+    stressStatus.classList.add("alert");
+  } else {
+    stressStatus.textContent = "Normal";
+    stressStatus.classList.remove("alert");
+  }
+
+  // Heart Rate status
+  if (data.heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    heartRateStatus.textContent = "High Heart Rate";
+    heartRateStatus.classList.add("alert");
+  } else {
+    heartRateStatus.textContent = "Normal";
+    heartRateStatus.classList.remove("alert");
   }
 }
 
@@ -80,29 +121,70 @@ function updateCaregiverDashboard(data) {
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
-function checkTemperatureAlert(temp, isSim = false) {
+// ======== ALERT CHECKING ========
+function checkAlerts(data, isSim = false) {
   const now = Date.now();
+  const { temperature, stressLevel, heartRate } = data;
 
-  // Simulation triggers instantly
-  if (isSim && temp > HIGH_TEMP_THRESHOLD) {
-    showSuggestions();
-    pushAlert(`Simulation: Temperature ${temp.toFixed(1)} \u00B0C`);
+  let anyAlert = false;
+
+  // Instant alerts in simulation mode
+  if (isSim) {
+    if (temperature > HIGH_TEMP_THRESHOLD) {
+      pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C`);
+      anyAlert = true;
+    }
+    if (stressLevel > HIGH_STRESS_THRESHOLD) {
+      pushAlert(`Simulation: Stress Level ${stressLevel}`);
+      anyAlert = true;
+    }
+    if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
+      pushAlert(`Simulation: Heart Rate ${heartRate} bpm`);
+      anyAlert = true;
+    }
+    if (anyAlert) showSuggestions();
+    else hideSuggestions();
     return;
   }
 
-  // Live data: wait 1 minute
-  if (!isSim && temp > HIGH_TEMP_THRESHOLD) {
-    if (!highTempStart) {
-      highTempStart = now;
-      startCountdown(HIGH_TEMP_DURATION);
-    } else if (now - highTempStart >= HIGH_TEMP_DURATION) {
-      stopCountdown();
-      showSuggestions();
+  // Live data alerts with duration check
+  if (temperature > HIGH_TEMP_THRESHOLD) {
+    if (!highTempStart) highTempStart = now;
+    else if (now - highTempStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 1 min`);
+      anyAlert = true;
       highTempStart = null;
     }
   } else {
     highTempStart = null;
+  }
+
+  if (stressLevel > HIGH_STRESS_THRESHOLD) {
+    if (!highStressStart) highStressStart = now;
+    else if (now - highStressStart >= HIGH_ALERT_DURATION) {
+      pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 1 min`);
+      anyAlert = true;
+      highStressStart = null;
+    }
+  } else {
+    highStressStart = null;
+  }
+
+  if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    if (!highHeartRateStart) highHeartRateStart = now;
+    else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`);
+      anyAlert = true;
+      highHeartRateStart = null;
+    }
+  } else {
+    highHeartRateStart = null;
+  }
+
+  if (anyAlert) {
+    showSuggestions();
+    startCountdown(HIGH_ALERT_DURATION);
+  } else {
     hideSuggestions();
     stopCountdown();
   }
@@ -133,7 +215,7 @@ function stopCountdown() {
 
 function updateCountdownDisplay(seconds) {
   if (!countdownEl) return;
-  countdownEl.textContent = seconds > 0 ? `Alert in ${seconds}s` : '';
+  countdownEl.textContent = seconds > 0 ? seconds : '';
 }
 
 // ======== SUGGESTIONS & ALERTS ========
@@ -170,7 +252,7 @@ function simulateData() {
   } else {
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkTemperatureAlert(data.temperature, true); // instant suggestion for sim
+    checkAlerts(data, true); // instant suggestion for simulation
   }
 }
 window.simulateData = simulateData;
@@ -179,7 +261,7 @@ window.simulateData = simulateData;
 function toggleMusic() {
   const audio = document.getElementById("calmAudio");
   if (audio && audio.paused) {
-    audio.play().catch(()=>{}); // ignore play errors
+    audio.play().catch(() => { }); // ignore play errors
   } else if (audio) {
     audio.pause();
   }
