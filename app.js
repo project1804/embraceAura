@@ -54,6 +54,11 @@ let highStressStart = null;
 let highHeartRateStart = null;
 let countdownTimer = null;
 
+// Simulation state
+let simHighTempStart = null;
+let simHighStressStart = null;
+let simHighHeartRateStart = null;
+
 // 5 minutes threshold
 const HIGH_TEMP_THRESHOLD = 37.8;
 const HIGH_STRESS_THRESHOLD = 70;
@@ -110,23 +115,40 @@ function checkAlerts(data, isSim = false) {
   let anyAlert = false;
 
   if (isSim) {
+    // Track start time for simulated high readings
     if (temperature > HIGH_TEMP_THRESHOLD) {
-      pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C`);
-      anyAlert = true;
-    }
+      if (!simHighTempStart) simHighTempStart = now;
+      else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C for 5 min`);
+        anyAlert = true;
+        simHighTempStart = null;
+      }
+    } else simHighTempStart = null;
+
     if (stressLevel > HIGH_STRESS_THRESHOLD) {
-      pushAlert(`Simulation: Stress Level ${stressLevel}`);
-      anyAlert = true;
-    }
+      if (!simHighStressStart) simHighStressStart = now;
+      else if (now - simHighStressStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Stress Level ${stressLevel} for 5 min`);
+        anyAlert = true;
+        simHighStressStart = null;
+      }
+    } else simHighStressStart = null;
+
     if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
-      pushAlert(`Simulation: Heart Rate ${heartRate} bpm`);
-      anyAlert = true;
-    }
+      if (!simHighHeartRateStart) simHighHeartRateStart = now;
+      else if (now - simHighHeartRateStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Heart Rate ${heartRate} bpm for 5 min`);
+        anyAlert = true;
+        simHighHeartRateStart = null;
+      }
+    } else simHighHeartRateStart = null;
+
     if (anyAlert) showSuggestions();
     else hideSuggestions();
     return;
   }
 
+  // Real sensor logic
   if (temperature > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {
@@ -232,8 +254,18 @@ window.simulateData = simulateData;
 
 // ======== NEW: SIMULATE 5 MINUTES PASSED ========
 function simulateFiveMinutesPassed() {
-  showSuggestions();
-  pushAlert("Simulated: 5 minutes passed with high readings");
+  const data = {
+    temperature: parseFloat(simTemp.value) || 37.0,
+    heartRate: parseInt(simHeart.value) || 80,
+    stressLevel: parseInt(simStress.value) || 20,
+    timestamp: Date.now() - HIGH_ALERT_DURATION // Pretend this was recorded 5 min ago
+  };
+  // Force the simulation check to think 5 minutes has elapsed
+  simHighTempStart = Date.now() - HIGH_ALERT_DURATION;
+  simHighStressStart = Date.now() - HIGH_ALERT_DURATION;
+  simHighHeartRateStart = Date.now() - HIGH_ALERT_DURATION;
+
+  checkAlerts(data, true);
 }
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
 
