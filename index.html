@@ -35,7 +35,7 @@
   <div id="momPanel" class="panel mom-panel active">
     <div class="card greeting">
       <img src="mom-illustration.jpg" alt="Mom Illustration" class="illustration">
-      <h2>Hi Aishad, how are you feeling?</h2>
+      <h2>Hi Aishah, how are you feeling?</h2>
       <p class="subtext">Breathe and smile</p>
       <div class="countdown">Next update in: <span id="momCountdown">60</span>s</div>
     </div>
@@ -46,12 +46,10 @@
       <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
       <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
       <p>
-  Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
-  Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
-  Heart Rate Status: <span id="heartRateStatus">High Heart Rate</span>
-</p>
-
-
+        Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
+        Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
+        Heart Rate Status: <span id="heartRateStatus">High Heart Rate</span>
+      </p>
       <small id="lastUpdated">Updated: --</small>
     </div>
 
@@ -70,6 +68,8 @@
       <label>Stress Level: <input type="number" id="simStress" value="20"></label><br>
       <label><input type="checkbox" id="simPush"> Push to Firebase</label><br>
       <button onclick="simulateData()">Simulate</button>
+      <!-- New button for simulating 5 minutes passed -->
+      <button onclick="simulateFiveMinutesPassed()">Simulate 5 Minutes Passed</button>
     </div>
 
     <audio id="calmAudio">
@@ -105,5 +105,3 @@
   <script src="app.js" charset="UTF-8"></script>
 </body>
 </html>
-
-
