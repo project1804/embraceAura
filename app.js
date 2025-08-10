@@ -204,8 +204,8 @@ db.ref("sensorData").on("value", snapshot => {
   // store latest reading (sampler will push to chart every minute)
   latestReading = data;
 
-  // If chart is empty (first reading), also add an immediate point so user sees graph start right away
-  if (healthChart && chartLabels.length === 0) {
+  // Add an immediate point for every incoming sensor update (so chart updates instantly)
+  if (healthChart) {
     updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp || Date.now());
   }
 
@@ -299,7 +299,7 @@ function checkAlerts(data, isSim = false) {
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`); // preserved original message
       anyAlert = true;
       highHeartRateStart = null;
     }
@@ -381,8 +381,8 @@ function simulateData() {
     checkAlerts(data, true); // simulation mode
     latestReading = data;
 
-    // If chart currently empty, add an immediate point so user sees the graph start immediately
-    if (healthChart && chartLabels.length === 0) {
+    // Always add an immediate chart point on local simulate, so user sees it instantly
+    if (healthChart) {
       updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
     }
   }
