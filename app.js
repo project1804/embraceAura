@@ -65,6 +65,127 @@ const HIGH_STRESS_THRESHOLD = 70;
 const HIGH_HEARTRATE_THRESHOLD = 100;
 const HIGH_ALERT_DURATION = 5 * 60 * 1000; // 5 minutes
 
+// ======== CHART.JS SETUP ========
+// Latest reading (from simulation or Firebase)
+let latestReading = null;
+
+// Chart buffers and config
+const MAX_POINTS = 60; // keep last 60 minutes
+const chartLabels = [];
+const tempSeries = [];
+const hrSeries = [];
+const stressSeries = [];
+
+let healthChart = null;
+const healthCanvas = document.getElementById('healthChart');
+
+if (healthCanvas && typeof Chart !== 'undefined') {
+  const ctx = healthCanvas.getContext('2d');
+  healthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: chartLabels,
+      datasets: [
+        {
+          label: 'Temperature (°C)',
+          data: tempSeries,
+          borderColor: 'rgb(220,53,69)', // red
+          tension: 0.2,
+          pointRadius: 2,
+          yAxisID: 'y1'
+        },
+        {
+          label: 'Heart Rate (bpm)',
+          data: hrSeries,
+          borderColor: 'rgb(54,162,235)', // blue
+          tension: 0.2,
+          pointRadius: 2,
+          yAxisID: 'y2'
+        },
+        {
+          label: 'Stress Level',
+          data: stressSeries,
+          borderColor: 'rgb(40,167,69)', // green
+          tension: 0.2,
+          pointRadius: 2,
+          yAxisID: 'y3'
+        }
+      ]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: {
+          title: { display: true, text: 'Time' }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: { display: true, text: 'Temperature (°C)' },
+          suggestedMin: 35,
+          suggestedMax: 40
+        },
+        y2: {
+          type: 'linear',
+          display: false,
+          position: 'right',
+          title: { display: true, text: 'Heart Rate (bpm)' },
+          suggestedMin: 40,
+          suggestedMax: 140,
+          grid: { drawOnChartArea: false }
+        },
+        y3: {
+          type: 'linear',
+          display: false,
+          position: 'right',
+          title: { display: true, text: 'Stress Level' },
+          suggestedMin: 0,
+          suggestedMax: 100,
+          grid: { drawOnChartArea: false }
+        }
+      },
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+
+// Format time label
+function formatTimeLabel(ts) {
+  const d = new Date(ts);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// Add a point to the chart (safe if chart not present)
+function updateHealthChart(temp, hr, stress, ts = Date.now()) {
+  if (!healthChart) return; // no canvas present or Chart.js not loaded
+  const label = formatTimeLabel(ts);
+
+  chartLabels.push(label);
+  tempSeries.push(Number(temp.toFixed ? temp.toFixed(1) : (Math.round(temp*10)/10)));
+  hrSeries.push(Number(hr));
+  stressSeries.push(Number(stress));
+
+  // keep arrays within MAX_POINTS
+  while (chartLabels.length > MAX_POINTS) {
+    chartLabels.shift();
+    tempSeries.shift();
+    hrSeries.shift();
+    stressSeries.shift();
+  }
+
+  healthChart.update('none'); // 'none' disables animation for instant update
+}
+
+// Sampler: push the latest reading every minute.
+// This gives you a consistent "every-minute" timeline regardless of sensor push frequency.
+setInterval(() => {
+  if (!latestReading) return;
+  updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, Date.now());
+}, 60 * 1000); // 60s
+
 // ======== NAVIGATION ========
 document.querySelectorAll(".nav-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -80,6 +201,14 @@ db.ref("sensorData").on("value", snapshot => {
 
   updateMomDashboard(data);
   updateCaregiverDashboard(data);
+  // store latest reading (sampler will push to chart every minute)
+  latestReading = data;
+
+  // If chart is empty (first reading), also add an immediate point so user sees graph start right away
+  if (healthChart && chartLabels.length === 0) {
+    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp || Date.now());
+  }
+
   checkAlerts(data, false);
 });
 
@@ -107,6 +236,7 @@ function updateCaregiverDashboard(data) {
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
+// ======== ALERT CHECKING ========
 function checkAlerts(data, isSim = false) {
   const now = Date.now();
   const { temperature, stressLevel, heartRate } = data;
@@ -114,7 +244,7 @@ function checkAlerts(data, isSim = false) {
   let anyAlert = false;
 
   if (isSim) {
-    // Simulated high readings timer logic
+    // Track start time for simulated high readings
     if (temperature > HIGH_TEMP_THRESHOLD) {
       if (!simHighTempStart) simHighTempStart = now;
       else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
@@ -142,16 +272,12 @@ function checkAlerts(data, isSim = false) {
       }
     } else simHighHeartRateStart = null;
 
-    // Only show suggestions if a simulated alert has actually been triggered
-    if (anyAlert) {
-      showSuggestions();
-    } else {
-      hideSuggestions();
-    }
+    if (anyAlert) showSuggestions();
+    else hideSuggestions();
     return;
   }
 
-  // ======== REAL SENSOR LOGIC ========
+  // Real sensor logic
   if (temperature > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {
@@ -187,7 +313,6 @@ function checkAlerts(data, isSim = false) {
     stopCountdown();
   }
 }
-
 
 // ======== COUNTDOWN FUNCTIONS ========
 function startCountdown(duration) {
@@ -247,11 +372,19 @@ function simulateData() {
   };
 
   if (simPush.checked) {
+    // If pushing to Firebase, the Firebase listener will set latestReading and the chart will update
     db.ref("sensorData").set(data);
   } else {
+    // local simulation: update UI and set latestReading so the sampler will add to chart every minute
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkAlerts(data, true);
+    checkAlerts(data, true); // simulation mode
+    latestReading = data;
+
+    // If chart currently empty, add an immediate point so user sees the graph start immediately
+    if (healthChart && chartLabels.length === 0) {
+      updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
+    }
   }
 }
 window.simulateData = simulateData;
@@ -264,11 +397,23 @@ function simulateFiveMinutesPassed() {
     stressLevel: parseInt(simStress.value) || 20,
     timestamp: Date.now() - HIGH_ALERT_DURATION // Pretend this was recorded 5 min ago
   };
-  // Force the simulation check to think 5 minutes has elapsed
+
+  // Force the simulation timers to look as if they started 5 minutes ago
   simHighTempStart = Date.now() - HIGH_ALERT_DURATION;
   simHighStressStart = Date.now() - HIGH_ALERT_DURATION;
   simHighHeartRateStart = Date.now() - HIGH_ALERT_DURATION;
 
+  // Update UI and latestReading (sampler will add next minute; we also add a historical timestamp point)
+  updateMomDashboard(data);
+  updateCaregiverDashboard(data);
+  latestReading = data;
+
+  // Add immediate chart point with the older timestamp so it appears on timeline
+  if (healthChart) {
+    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
+  }
+
+  // run the normal simulation alert check which will now pass
   checkAlerts(data, true);
 }
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
@@ -319,4 +464,3 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
-
