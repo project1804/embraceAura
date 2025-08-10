@@ -56,7 +56,15 @@
     <div id="suggestionCard" class="card suggestions" style="display:none;">
       <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
-      <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play Calming Music</button>
+
+      <!-- NEW: Music choice dropdown -->
+      <label for="musicChoice"><i class="fas fa-music"></i> Music Choice:</label>
+      <select id="musicChoice">
+        <option value="calming.mp3">Calming Music</option>
+        <option value="zikir.mp3">Zikir</option>
+      </select>
+
+      <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play/Pause Music</button>
       <button onclick="startBreathing()"><i class="fas fa-wind"></i> Guided Breathing</button>
       <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
     </div>
@@ -68,7 +76,8 @@
       <label>Stress Level: <input type="number" id="simStress" value="20"></label><br>
       <label><input type="checkbox" id="simPush"> Push to Firebase</label><br>
       <button onclick="simulateData()">Simulate</button>
-      <!-- New button for simulating 5 minutes passed -->
+      
+      <!-- NEW: 5-minute simulation button -->
       <button onclick="simulateFiveMinutesPassed()">Simulate 5 Minutes Passed</button>
     </div>
 
