@@ -222,7 +222,7 @@ function checkAlerts(data, isSim = false) {
   let anyAlert = false;
 
   if (isSim) {
-    // Track start time for simulated high readings
+    // Simulated high readings (simulation mode)
     if (temperature > HIGH_TEMP_THRESHOLD) {
       if (!simHighTempStart) simHighTempStart = now;
       else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
@@ -277,11 +277,24 @@ function checkAlerts(data, isSim = false) {
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`); // preserved original message
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
       anyAlert = true;
       highHeartRateStart = null;
     }
   } else highHeartRateStart = null;
+
+  // ======== CAREGIVER BUTTON LOGIC ========
+  // Check if any of the readings are still above the threshold for 5 minutes
+  if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    const highAlertDuration = now - Math.max(highTempStart || 0, highStressStart || 0, highHeartRateStart || 0);
+    if (highAlertDuration >= HIGH_ALERT_DURATION) {
+      document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
+    } else {
+      document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button
+    }
+  } else {
+    document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
+  }
 
   if (anyAlert) {
     showSuggestions();
@@ -291,6 +304,7 @@ function checkAlerts(data, isSim = false) {
     stopCountdown();
   }
 }
+
 
 // ======== COUNTDOWN FUNCTIONS ========
 function startCountdown(duration) {
@@ -459,5 +473,6 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
