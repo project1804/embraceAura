@@ -60,11 +60,25 @@
           <span id="temperatureDisplay">-- °C</span>
         </div>
       </div>
-      <p>
-        Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
-        Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
-        Heart Rate Status: <span id="heartRateStatus">Normal</span>
-      </p>
+        <p>
+  Temperature Status: 
+  <span id="tempStatus" class="status status-normal">
+    <i class="fas fa-check-circle"></i> Normal
+  </span> 
+  &nbsp; | &nbsp;
+  
+  Stress Status: 
+  <span id="stressStatus" class="status status-normal">
+    <i class="fas fa-check-circle"></i> Normal
+  </span> 
+  &nbsp; | &nbsp;
+  
+  Heart Rate Status: 
+  <span id="heartRateStatus" class="status status-normal">
+    <i class="fas fa-check-circle"></i> Normal
+  </span>
+</p>
+
       <small id="lastUpdated">Updated: --</small>
     </div>
 
@@ -138,24 +152,6 @@
     </div>
   </div>
 
-  <p>
-  Temperature Status: 
-  <span id="tempStatus" class="status status-normal">
-    <i class="fas fa-check-circle"></i> Normal
-  </span> 
-  &nbsp; | &nbsp;
-  
-  Stress Status: 
-  <span id="stressStatus" class="status status-normal">
-    <i class="fas fa-check-circle"></i> Normal
-  </span> 
-  &nbsp; | &nbsp;
-  
-  Heart Rate Status: 
-  <span id="heartRateStatus" class="status status-normal">
-    <i class="fas fa-check-circle"></i> Normal
-  </span>
-</p>
 
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -181,4 +177,5 @@
   </script>
 </body>
 </html>
+
 
