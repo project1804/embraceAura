@@ -214,30 +214,57 @@ function updateCaregiverDashboard(data) {
   careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
+// ======== ALERT CHECKING ========
 function checkAlerts(data, isSim = false) {
   const now = Date.now();
   const { temperature, stressLevel, heartRate } = data;
 
   let anyAlert = false;
 
-  // Simulated high readings (simulation mode)
   if (isSim) {
-    handleSimulatedReadings(temperature, stressLevel, heartRate, now);
+    // Simulated high readings (simulation mode)
+    if (temperature > HIGH_TEMP_THRESHOLD) {
+      if (!simHighTempStart) simHighTempStart = now;
+      else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C for 5 min`);
+        anyAlert = true;
+        simHighTempStart = null;
+      }
+    } else simHighTempStart = null;
+
+    if (stressLevel > HIGH_STRESS_THRESHOLD) {
+      if (!simHighStressStart) simHighStressStart = now;
+      else if (now - simHighStressStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Stress Level ${stressLevel} for 5 min`);
+        anyAlert = true;
+        simHighStressStart = null;
+      }
+    } else simHighStressStart = null;
+
+    if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
+      if (!simHighHeartRateStart) simHighHeartRateStart = now;
+      else if (now - simHighHeartRateStart >= HIGH_ALERT_DURATION) {
+        pushAlert(`Simulation: Heart Rate ${heartRate} bpm for 5 min`);
+        anyAlert = true;
+        simHighHeartRateStart = null;
+      }
+    } else simHighHeartRateStart = null;
+
+    if (anyAlert) showSuggestions();
+    else hideSuggestions();
     return;
   }
 
   // Real sensor logic
-  // Check temperature
   if (temperature > HIGH_TEMP_THRESHOLD) {
-    if (!highTempStart) highTempStart = now;  // Start the timer if it's the first abnormal reading
-    else if (now - highTempStart >= HIGH_ALERT_DURATION) {  // Check if 5 minutes have passed
-      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}°C for 5 min`);
+    if (!highTempStart) highTempStart = now;
+    else if (now - highTempStart >= HIGH_ALERT_DURATION) {
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
       anyAlert = true;
-      highTempStart = null;  // Reset the start time after the alert
+      highTempStart = null;
     }
-  } else highTempStart = null;  // Reset if the temperature goes back to normal
+  } else highTempStart = null;
 
-  // Check stress level
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
     if (!highStressStart) highStressStart = now;
     else if (now - highStressStart >= HIGH_ALERT_DURATION) {
@@ -247,7 +274,6 @@ function checkAlerts(data, isSim = false) {
     }
   } else highStressStart = null;
 
-  // Check heart rate
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
@@ -257,59 +283,28 @@ function checkAlerts(data, isSim = false) {
     }
   } else highHeartRateStart = null;
 
-  // Show caregiver button if any alert occurred
-  if (anyAlert) {
-    showSuggestions();  // Show any suggestions (or wellness tools)
-    startCountdown(HIGH_ALERT_DURATION);  // Start countdown for caregiver action
-  } else {
-    hideSuggestions();  // Hide suggestions if no alerts
-    stopCountdown();    // Stop countdown if no alerts
-  }
-
-  // Caregiver button logic (independent of alerts)
-  handleCaregiverButton();
-}
-
-// Handle Simulated High Readings (for testing or simulation mode)
-function handleSimulatedReadings(temperature, stressLevel, heartRate, now) {
-  if (temperature > HIGH_TEMP_THRESHOLD) {
-    if (!simHighTempStart) simHighTempStart = now;
-    else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Simulation: Temperature ${temperature.toFixed(1)}°C for 5 min`);
-      simHighTempStart = null;
-    }
-  } else simHighTempStart = null;
-
-  if (stressLevel > HIGH_STRESS_THRESHOLD) {
-    if (!simHighStressStart) simHighStressStart = now;
-    else if (now - simHighStressStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Simulation: Stress Level ${stressLevel} for 5 min`);
-      simHighStressStart = null;
-    }
-  } else simHighStressStart = null;
-
-  if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    if (!simHighHeartRateStart) simHighHeartRateStart = now;
-    else if (now - simHighHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Simulation: Heart Rate ${heartRate} bpm for 5 min`);
-      simHighHeartRateStart = null;
-    }
-  } else simHighHeartRateStart = null;
-}
-
-// Handle caregiver button visibility (independent of alert checks)
-function handleCaregiverButton() {
-  const now = Date.now();
+  // ======== CAREGIVER BUTTON LOGIC ========
+  // Check if any of the readings are still above the threshold for 5 minutes
   if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
     const highAlertDuration = now - Math.max(highTempStart || 0, highStressStart || 0, highHeartRateStart || 0);
     if (highAlertDuration >= HIGH_ALERT_DURATION) {
       document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
+    } else {
+      document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button
     }
   } else {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
   }
-}
 
+  // If any alert occurred, show suggestions and start countdown
+  if (anyAlert) {
+    showSuggestions();
+    startCountdown(HIGH_ALERT_DURATION);
+  } else {
+    hideSuggestions();
+    stopCountdown();
+  }
+}
 
 
 
@@ -514,8 +509,6 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
-
-
 
 
 
