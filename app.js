@@ -443,3 +443,21 @@ function clearAlerts() {
 }
 window.clearAlerts = clearAlerts;
 
+// ======== NEW: SUGGESTIONS AFTER 5 MINUTES ========
+function checkAlerts(data, isSim = false) {
+  const now = Date.now();
+  const { temperature, stressLevel, heartRate } = data;
+
+  let anyAlert = false;
+
+  if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    const highAlertDuration = now - (highTempStart || highStressStart || highHeartRateStart);
+    if (highAlertDuration >= HIGH_ALERT_DURATION) {
+      document.getElementById("caregiverButton").style.display = "block"; // Show the caregiver button
+    }
+  } else {
+    document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
+  }
+}
+
+
