@@ -357,7 +357,15 @@ function pushAlert(message) {
 
   // Prepend the alert item to the alerts list
   const alertsList = document.getElementById("alertsList");
-  alertsList.prepend(alertItem); 
+
+  // Clear the "No alerts yet" message if present
+  const mutedText = alertsList.querySelector(".muted");
+  if (mutedText) {
+    mutedText.remove();
+  }
+
+  // Prepend the new alert item
+  alertsList.prepend(alertItem);
 
   // Ensure the alerts section is visible when alerts are present
   if (alertCount > 0) {
@@ -488,6 +496,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
