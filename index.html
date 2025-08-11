@@ -23,51 +23,6 @@
       margin-top: 5px;
       font-style: italic;
     }
-    
-    /* Status Text Styling: Normal vs High */
-    .status {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 12px;
-      transition: background 0.3s ease;
-      display: inline-block; /* Keeps the status in line */
-      margin: 5px 0;
-    }
-
-    .status-normal {
-      color: #4caf50; /* Green for normal */
-      background-color: #dcedc8; /* Light green background */
-    }
-
-    .status-high {
-      color: #e53935; /* Red for high */
-      background-color: #ffebee; /* Light red background */
-    }
-
-    .status i {
-      margin-right: 8px;
-      font-size: 1.5em; /* Icon size */
-      vertical-align: middle;
-    }
-
-    /* Icons for Normal/High Status */
-    .status-normal i {
-      color: #4caf50; /* Green icon */
-    }
-
-    .status-high i {
-      color: #e53935; /* Red icon */
-    }
-
-    /* For mobile view */
-    @media (max-width: 768px) {
-      .status {
-        font-size: 1.2em;
-        padding: 8px;
-      }
-    }
   </style>
 </head>
   
@@ -106,9 +61,9 @@
         </div>
       </div>
       <p>
-        Temperature Status: <span id="tempStatus" class="status status-normal"><i class="fas fa-check-circle"></i> Normal</span> &nbsp; | &nbsp;
-        Stress Status: <span id="stressStatus" class="status status-normal"><i class="fas fa-check-circle"></i> Normal</span> &nbsp; | &nbsp;
-        Heart Rate Status: <span id="heartRateStatus" class="status status-normal"><i class="fas fa-check-circle"></i> Normal</span>
+        Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
+        Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
+        Heart Rate Status: <span id="heartRateStatus">Normal</span>
       </p>
       <small id="lastUpdated">Updated: --</small>
     </div>
