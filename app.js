@@ -1,10 +1,10 @@
 // ======== IMAGE REFERENCE SETUP (with GIFs and PNG for low stress) ========
-const lowHeartGif = 'path_to_your_gifs/slow_heart.gif';
-const highHeartGif = 'path_to_your_gifs/fast_heart.gif';
-const lowStressPng = 'path_to_your_images/low_stress.png';  // PNG for low stress
-const highStressGif = 'path_to_your_gifs/high_stress.gif';
-const lowTempGif = 'path_to_your_gifs/cool_temp.gif';
-const highTempGif = 'path_to_your_gifs/hot_temp.gif';
+const lowHeartGif = 'slow_heart.gif';
+const highHeartGif = 'fast_heart.gif';
+const lowStressPng = 'low_stress.jpg';  // PNG for low stress
+const highStressGif = 'high_stress.gif';
+const lowTempGif = 'cool_temp.gif';
+const highTempGif = 'hot_temp.gif';
 
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
@@ -293,3 +293,4 @@ function simulateData() {
   }
 }
 window.simulateData = simulateData;
+
