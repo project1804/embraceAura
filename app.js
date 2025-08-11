@@ -1,6 +1,6 @@
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
-apiKey: "AIzaSyDojSgXigZkJLLji5VVkKFFxfoSUPH-s7I",
+  apiKey: "AIzaSyDojSgXigZkJLLji5VVkKFFxfoSUPH-s7I",
   authDomain: "embraceaura-4c3ca.firebaseapp.com",
   databaseURL: "https://embraceaura-4c3ca-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "embraceaura-4c3ca",
@@ -19,33 +19,12 @@ const tempStatus = document.getElementById("tempStatus");
 let stressStatus = document.getElementById("stressStatus");
 let heartRateStatus = document.getElementById("heartRateStatus");
 
-if (!stressStatus) {
-  stressStatus = document.createElement("span");
-  stressStatus.id = "stressStatus";
-  tempStatus.parentElement.insertBefore(stressStatus, tempStatus.nextSibling);
-}
-if (!heartRateStatus) {
-  heartRateStatus = document.createElement("span");
-  heartRateStatus.id = "heartRateStatus";
-  tempStatus.parentElement.insertBefore(heartRateStatus, stressStatus.nextSibling);
-}
-
 const suggestionCard = document.getElementById("suggestionCard");
 
 const careTemp = document.getElementById("careTemp");
 const careHR = document.getElementById("careHR");
 const careStress = document.getElementById("careStress");
 const careUpdated = document.getElementById("careUpdated");
-
-const alertsList = document.getElementById("alertsList");
-const alertBadge = document.getElementById("alertBadge");
-
-const simTemp = document.getElementById("simTemp");
-const simHeart = document.getElementById("simHeart");
-const simStress = document.getElementById("simStress");
-const simPush = document.getElementById("simPush");
-
-const countdownEl = document.getElementById("momCountdown");
 
 // ======== STATE ========
 let alertCount = 0;
@@ -180,36 +159,35 @@ function updateHealthChart(temp, hr, stress, ts = Date.now()) {
 }
 
 // Sampler: push the latest reading every minute.
-// This gives you a consistent "every-minute" timeline regardless of sensor push frequency.
 setInterval(() => {
   if (!latestReading) return;
   updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, Date.now());
 }, 60 * 1000); // 60s
 
-// ======== NAVIGATION ========
-document.querySelectorAll(".nav-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-    document.getElementById(btn.dataset.panel).classList.add("active");
-  });
-});
-
 // ======== FIREBASE LISTENER ========
-db.ref("sensorData").on("value", snapshot => {
-  const data = snapshot.val();
-  if (!data) return;
+db.ref("Headband/skin").on("value", snapshot => {
+  const skinTemp = snapshot.val(); // Get the skin temperature from Firebase
+  if (skinTemp !== null) {
+    // Assuming sensor data includes skin (temperature)
+    latestReading = {
+      temperature: skinTemp,
+      heartRate: latestReading?.heartRate || 80, // default heart rate if unavailable
+      stressLevel: latestReading?.stressLevel || 20, // default stress level if unavailable
+      timestamp: Date.now()
+    };
 
-  updateMomDashboard(data);
-  updateCaregiverDashboard(data);
-  // store latest reading (sampler will push to chart every minute)
-  latestReading = data;
+    // Update the temperature UI with live sensor data
+    updateMomDashboard(latestReading);
+    updateCaregiverDashboard(latestReading);
 
-  // Add an immediate point for every incoming sensor update (so chart updates instantly)
-  if (healthChart) {
-    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp || Date.now());
+    // Update chart instantly with live data
+    if (healthChart) {
+      updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, latestReading.timestamp);
+    }
+
+    // Check alerts based on the latest sensor data
+    checkAlerts(latestReading);
   }
-
-  checkAlerts(data, false);
 });
 
 // ======== UPDATE UI FUNCTIONS ========
@@ -464,4 +442,3 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
-
