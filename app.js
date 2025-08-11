@@ -1,3 +1,11 @@
+// ======== IMAGE REFERENCE SETUP (with GIFs and PNG for low stress) ========
+const lowHeartGif = 'path_to_your_gifs/slow_heart.gif';
+const highHeartGif = 'path_to_your_gifs/fast_heart.gif';
+const lowStressPng = 'path_to_your_images/low_stress.png';  // PNG for low stress
+const highStressGif = 'path_to_your_gifs/high_stress.gif';
+const lowTempGif = 'path_to_your_gifs/cool_temp.gif';
+const highTempGif = 'path_to_your_gifs/hot_temp.gif';
+
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
   apiKey: "AIzaSyDojXgXigZkJLLji5VVkKFFxfoSUPH-s7I",
@@ -54,19 +62,7 @@ let highStressStart = null;
 let highHeartRateStart = null;
 let countdownTimer = null;
 
-// Simulation state
-let simHighTempStart = null;
-let simHighStressStart = null;
-let simHighHeartRateStart = null;
-
-// 5 minutes threshold
-const HIGH_TEMP_THRESHOLD = 37.8;
-const HIGH_STRESS_THRESHOLD = 70;
-const HIGH_HEARTRATE_THRESHOLD = 100;
-const HIGH_ALERT_DURATION = 5 * 60 * 1000; // 5 minutes
-
 // ======== CHART.JS SETUP ========
-// Latest reading (from simulation or Firebase)
 let latestReading = null;
 
 // Chart buffers and config
@@ -152,47 +148,34 @@ if (healthCanvas && typeof Chart !== 'undefined') {
   });
 }
 
-// Format time label
-function formatTimeLabel(ts) {
-  const d = new Date(ts);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
+// ======== UPDATE UI WITH IMAGES BASED ON DATA ========
+function updateMomDashboard(data) {
+  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+  heartRateDisplay.textContent = `${data.heartRate} bpm`;
+  stressDisplay.textContent = data.stressLevel;
+  lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 
-// Add a point to the chart (safe if chart not present)
-function updateHealthChart(temp, hr, stress, ts = Date.now()) {
-  if (!healthChart) return; // no canvas present or Chart.js not loaded
-  const label = formatTimeLabel(ts);
-
-  chartLabels.push(label);
-  tempSeries.push(Number(temp.toFixed ? temp.toFixed(1) : (Math.round(temp*10)/10)));
-  hrSeries.push(Number(hr));
-  stressSeries.push(Number(stress));
-
-  // keep arrays within MAX_POINTS
-  while (chartLabels.length > MAX_POINTS) {
-    chartLabels.shift();
-    tempSeries.shift();
-    hrSeries.shift();
-    stressSeries.shift();
+  // Update temperature status with GIF
+  if (data.temperature > HIGH_TEMP_THRESHOLD) {
+    tempStatus.src = highTempGif;  // GIF for high temperature
+  } else {
+    tempStatus.src = lowTempGif;  // GIF for low temperature
   }
 
-  healthChart.update('none'); // 'none' disables animation for instant update
+  // Update stress status with appropriate image
+  if (data.stressLevel > HIGH_STRESS_THRESHOLD) {
+    stressStatus.src = highStressGif;  // GIF for high stress
+  } else {
+    stressStatus.src = lowStressPng;  // PNG for low stress
+  }
+
+  // Update heart rate status with GIF
+  if (data.heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    heartRateStatus.src = highHeartGif;  // GIF for high heart rate
+  } else {
+    heartRateStatus.src = lowHeartGif;  // GIF for normal heart rate
+  }
 }
-
-// Sampler: push the latest reading every minute.
-// This gives you a consistent "every-minute" timeline regardless of sensor push frequency.
-setInterval(() => {
-  if (!latestReading) return;
-  updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, Date.now());
-}, 60 * 1000); // 60s
-
-// ======== NAVIGATION ========
-document.querySelectorAll(".nav-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-    document.getElementById(btn.dataset.panel).classList.add("active");
-  });
-});
 
 // ======== FIREBASE LISTENER ========
 db.ref("sensorData").on("value", snapshot => {
@@ -201,40 +184,14 @@ db.ref("sensorData").on("value", snapshot => {
 
   updateMomDashboard(data);
   updateCaregiverDashboard(data);
-  // store latest reading (sampler will push to chart every minute)
   latestReading = data;
 
-  // Add an immediate point for every incoming sensor update (so chart updates instantly)
   if (healthChart) {
     updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp || Date.now());
   }
 
   checkAlerts(data, false);
 });
-
-// ======== UPDATE UI FUNCTIONS ========
-function updateMomDashboard(data) {
-  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
-  heartRateDisplay.textContent = `${data.heartRate} bpm`;
-  stressDisplay.textContent = data.stressLevel;
-  lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
-
-  tempStatus.textContent = data.temperature > HIGH_TEMP_THRESHOLD ? "High Temperature" : "Normal";
-  tempStatus.classList.toggle("alert", data.temperature > HIGH_TEMP_THRESHOLD);
-
-  stressStatus.textContent = data.stressLevel > HIGH_STRESS_THRESHOLD ? "High Stress" : "Normal";
-  stressStatus.classList.toggle("alert", data.stressLevel > HIGH_STRESS_THRESHOLD);
-
-  heartRateStatus.textContent = data.heartRate > HIGH_HEARTRATE_THRESHOLD ? "High Heart Rate" : "Normal";
-  heartRateStatus.classList.toggle("alert", data.heartRate > HIGH_HEARTRATE_THRESHOLD);
-}
-
-function updateCaregiverDashboard(data) {
-  careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
-  careHR.textContent = `${data.heartRate} bpm`;
-  careStress.textContent = data.stressLevel;
-  careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
-}
 
 // ======== ALERT CHECKING ========
 function checkAlerts(data, isSim = false) {
@@ -244,7 +201,6 @@ function checkAlerts(data, isSim = false) {
   let anyAlert = false;
 
   if (isSim) {
-    // Track start time for simulated high readings
     if (temperature > HIGH_TEMP_THRESHOLD) {
       if (!simHighTempStart) simHighTempStart = now;
       else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
@@ -299,7 +255,7 @@ function checkAlerts(data, isSim = false) {
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`); // preserved original message
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`);
       anyAlert = true;
       highHeartRateStart = null;
     }
@@ -314,54 +270,6 @@ function checkAlerts(data, isSim = false) {
   }
 }
 
-// ======== COUNTDOWN FUNCTIONS ========
-function startCountdown(duration) {
-  let remaining = Math.ceil(duration / 1000);
-  updateCountdownDisplay(remaining);
-
-  stopCountdown();
-  countdownTimer = setInterval(() => {
-    remaining--;
-    if (remaining <= 0) {
-      stopCountdown();
-      updateCountdownDisplay(0);
-      return;
-    }
-    updateCountdownDisplay(remaining);
-  }, 1000);
-}
-
-function stopCountdown() {
-  if (countdownTimer) clearInterval(countdownTimer);
-  countdownTimer = null;
-  if (countdownEl) countdownEl.textContent = "";
-}
-
-function updateCountdownDisplay(seconds) {
-  if (!countdownEl) return;
-  countdownEl.textContent = seconds > 0 ? seconds : '';
-}
-
-// ======== SUGGESTIONS & ALERTS ========
-function showSuggestions() {
-  suggestionCard.style.display = "block";
-}
-
-function hideSuggestions() {
-  suggestionCard.style.display = "none";
-}
-
-function pushAlert(message) {
-  alertCount++;
-  alertBadge.style.display = "inline-block";
-  alertBadge.textContent = alertCount;
-
-  const alertItem = document.createElement("div");
-  alertItem.className = "card alert";
-  alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
-  alertsList.prepend(alertItem);
-}
-
 // ======== SIMULATION TOOL ========
 function simulateData() {
   const data = {
@@ -372,95 +280,16 @@ function simulateData() {
   };
 
   if (simPush.checked) {
-    // If pushing to Firebase, the Firebase listener will set latestReading and the chart will update
     db.ref("sensorData").set(data);
   } else {
-    // local simulation: update UI and set latestReading so the sampler will add to chart every minute
     updateMomDashboard(data);
     updateCaregiverDashboard(data);
-    checkAlerts(data, true); // simulation mode
+    checkAlerts(data, true);
     latestReading = data;
 
-    // Always add an immediate chart point on local simulate, so user sees it instantly
     if (healthChart) {
       updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
     }
   }
 }
 window.simulateData = simulateData;
-
-// ======== NEW: SIMULATE 5 MINUTES PASSED ========
-function simulateFiveMinutesPassed() {
-  const data = {
-    temperature: parseFloat(simTemp.value) || 37.0,
-    heartRate: parseInt(simHeart.value) || 80,
-    stressLevel: parseInt(simStress.value) || 20,
-    timestamp: Date.now() - HIGH_ALERT_DURATION // Pretend this was recorded 5 min ago
-  };
-
-  // Force the simulation timers to look as if they started 5 minutes ago
-  simHighTempStart = Date.now() - HIGH_ALERT_DURATION;
-  simHighStressStart = Date.now() - HIGH_ALERT_DURATION;
-  simHighHeartRateStart = Date.now() - HIGH_ALERT_DURATION;
-
-  // Update UI and latestReading (sampler will add next minute; we also add a historical timestamp point)
-  updateMomDashboard(data);
-  updateCaregiverDashboard(data);
-  latestReading = data;
-
-  // Add immediate chart point with the older timestamp so it appears on timeline
-  if (healthChart) {
-    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
-  }
-
-  // run the normal simulation alert check which will now pass
-  checkAlerts(data, true);
-}
-window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
-
-// ======== MUSIC FUNCTIONS ========
-function toggleMusic() {
-  const audio = document.getElementById("calmAudio");
-  const choice = document.getElementById("musicChoice").value;
-
-  if (audio.src.indexOf(choice) === -1) {
-    audio.src = choice;
-  }
-
-  if (audio.paused) {
-    audio.play().catch(() => {});
-  } else {
-    audio.pause();
-  }
-}
-window.toggleMusic = toggleMusic;
-
-// ======== TOOL FUNCTIONS ========
-function startBreathing() {
-  alert("Guided breathing started.");
-}
-window.startBreathing = startBreathing;
-
-function showAffirmation() {
-  alert("You are strong, calm, and capable.");
-}
-window.showAffirmation = showAffirmation;
-
-function callNow() {
-  alert("Calling caregiver...");
-}
-window.callNow = callNow;
-
-function markAllHandled() {
-  alertsList.innerHTML = `<div class="muted">All alerts handled.</div>`;
-  alertCount = 0;
-  alertBadge.style.display = "none";
-}
-window.markAllHandled = markAllHandled;
-
-function clearAlerts() {
-  alertsList.innerHTML = `<div class="muted">No alerts yet.</div>`;
-  alertCount = 0;
-  alertBadge.style.display = "none";
-}
-window.clearAlerts = clearAlerts;
