@@ -348,15 +348,17 @@ function hideSuggestions() {
 function pushAlert(message) {
   console.log('Pushing alert:', message);  // Debugging: Check if this is called
 
+  // Ensure alertBadge exists before proceeding
+  const alertBadge = document.getElementById("alertBadge");
   if (!alertBadge) {
     console.error('alertBadge not found!');
     return;  // Exit if alertBadge is not found
   }
 
-  alertCount++;  // Increment alert count each time an alert is triggered
-
+  // Increment alert count and update the badge
+  alertCount++;  
   alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible
-  alertBadge.textContent = alertCount;  // Update the alert count
+  alertBadge.textContent = alertCount;  // Update the alert count displayed
 
   // Ensure alertsList is found
   const alertsList = document.getElementById("alertsList");
@@ -370,21 +372,20 @@ function pushAlert(message) {
   alertItem.className = "card alert";
   alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
 
-  // Clear the "No alerts yet" message if present
+  // Check if "No alerts yet" message exists and remove it
   const mutedText = alertsList.querySelector(".muted");
   if (mutedText) {
-    mutedText.remove();
+    mutedText.remove();  // Remove the "No alerts yet" text
   }
 
-  // Prepend the new alert item
+  // Prepend the new alert item to the alerts list
   alertsList.prepend(alertItem);
 
-  // Ensure the alerts section is visible when alerts are present
-  if (alertCount > 0) {
-    alertsList.style.display = "block";  // Show alerts if there are any
-  } else {
-    alertsList.style.display = "none";  // Hide alerts section if no alerts
-  }
+  // Always make sure the alerts section is visible when there are alerts
+  alertsList.style.display = "block";  
+
+  // Optional: Scroll to the top of the alert list for visibility
+  alertsList.scrollTop = 0;
 }
 
 
@@ -508,6 +509,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
