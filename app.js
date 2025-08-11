@@ -229,7 +229,7 @@ function checkAlerts(data, isSim = false) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {  // 5 minutes passed
       pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Set the flag indicating that an alert occurred
     }
   } else {
     highTempStart = null; // Reset if the temperature goes back to normal
@@ -239,7 +239,7 @@ function checkAlerts(data, isSim = false) {
     if (!highStressStart) highStressStart = now;
     else if (now - highStressStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Set the flag indicating that an alert occurred
     }
   } else {
     highStressStart = null; // Reset if stress level goes back to normal
@@ -249,7 +249,7 @@ function checkAlerts(data, isSim = false) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Set the flag indicating that an alert occurred
     }
   } else {
     highHeartRateStart = null; // Reset if heart rate goes back to normal
@@ -258,14 +258,14 @@ function checkAlerts(data, isSim = false) {
   // **Caregiver button logic:**
   // Only show caregiver button if **5 minutes** have passed after the first abnormal reading
   if (anyAlert) {
-    showSuggestions();  // Show any suggestions (or wellness tools)
+    showSuggestions();  // Show wellness suggestions or tools
     startCountdown(HIGH_ALERT_DURATION);  // Start countdown for caregiver action
   } else {
     hideSuggestions();  // Hide suggestions if no alerts
     stopCountdown();    // Stop countdown if no alerts
   }
 
-  // Caregiver button should only show after 5 minutes of abnormal readings
+  // Caregiver button should show if at least 5 minutes of abnormal readings have passed
   if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
     const highAlertDuration = now - Math.max(highTempStart || 0, highStressStart || 0, highHeartRateStart || 0);
     if (highAlertDuration >= HIGH_ALERT_DURATION) {
@@ -275,8 +275,6 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
   }
 }
-
-
 
 // ======== COUNTDOWN FUNCTIONS ========
 function startCountdown(duration) {
@@ -357,135 +355,3 @@ function pushAlert(message) {
   // Optional: Scroll to the top of the alert list for visibility
   alertsList.scrollTop = 0;
 }
-
-
-
-// ======== SIMULATION TOOL ========
-function simulateData() {
-  const data = {
-    temperature: parseFloat(simTemp.value) || 37.0,
-    heartRate: parseInt(simHeart.value) || 80,
-    stressLevel: parseInt(simStress.value) || 20,
-    timestamp: Date.now()
-  };
-
-  if (simPush.checked) {
-    // If pushing to Firebase, the Firebase listener will set latestReading and the chart will update
-    db.ref("sensorData").set(data);
-  } else {
-    // local simulation: update UI and set latestReading so the sampler will add to chart every minute
-    updateMomDashboard(data);
-    updateCaregiverDashboard(data);
-    checkAlerts(data, true); // simulation mode
-    latestReading = data;
-
-    // Always add an immediate chart point on local simulate, so user sees it instantly
-    if (healthChart) {
-      updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
-    }
-  }
-}
-window.simulateData = simulateData;
-
-// ======== NEW: SIMULATE 5 MINUTES PASSED ========
-function simulateFiveMinutesPassed() {
-  const data = {
-    temperature: parseFloat(simTemp.value) || 37.0,
-    heartRate: parseInt(simHeart.value) || 80,
-    stressLevel: parseInt(simStress.value) || 20,
-    timestamp: Date.now() - HIGH_ALERT_DURATION // Pretend this was recorded 5 min ago
-  };
-
-  // Force the simulation timers to look as if they started 5 minutes ago
-  simHighTempStart = Date.now() - HIGH_ALERT_DURATION;
-  simHighStressStart = Date.now() - HIGH_ALERT_DURATION;
-  simHighHeartRateStart = Date.now() - HIGH_ALERT_DURATION;
-
-  // Update UI and latestReading (sampler will add next minute; we also add a historical timestamp point)
-  updateMomDashboard(data);
-  updateCaregiverDashboard(data);
-  latestReading = data;
-
-  // Add immediate chart point with the older timestamp so it appears on timeline
-  if (healthChart) {
-    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
-  }
-
-  // run the normal simulation alert check which will now pass
-  checkAlerts(data, true);
-}
-window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
-
-// ======== MUSIC FUNCTIONS ========
-function toggleMusic() {
-  const audio = document.getElementById("calmAudio");
-  const choice = document.getElementById("musicChoice").value;
-
-  if (audio.src.indexOf(choice) === -1) {
-    audio.src = choice;
-  }
-
-  if (audio.paused) {
-    audio.play().catch(() => {});
-  } else {
-    audio.pause();
-  }
-}
-window.toggleMusic = toggleMusic;
-
-// ======== TOOL FUNCTIONS ========
-function startBreathing() {
-  alert("Guided breathing started.");
-}
-window.startBreathing = startBreathing;
-
-function showAffirmation() {
-  alert("You are strong, calm, and capable.");
-}
-window.showAffirmation = showAffirmation;
-
-function callNow() {
-  alert("Calling caregiver...");
-}
-window.callNow = callNow;
-
-function markAllHandled() {
-  alertsList.innerHTML = `<div class="muted">All alerts handled.</div>`;
-  alertCount = 0;
-  alertBadge.style.display = "none";
-}
-window.markAllHandled = markAllHandled;
-
-function clearAlerts() {
-  alertsList.innerHTML = `<div class="muted">No alerts yet.</div>`;
-  alertCount = 0;
-  alertBadge.style.display = "none";
-}
-window.clearAlerts = clearAlerts;
-
-// ======== NEW: SUGGESTIONS AFTER 5 MINUTES ========
-function checkAlerts(data, isSim = false) {
-  const now = Date.now();
-  const { temperature, stressLevel, heartRate } = data;
-
-  let anyAlert = false;
-
-  if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    const highAlertDuration = now - (highTempStart || highStressStart || highHeartRateStart);
-    if (highAlertDuration >= HIGH_ALERT_DURATION) {
-      document.getElementById("caregiverButton").style.display = "block"; // Show the caregiver button
-    }
-  } else {
-    document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
-  }
-}
-
-
-
-
-
-
-
-
-
-
