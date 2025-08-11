@@ -346,15 +346,26 @@ function hideSuggestions() {
 }
 
 function pushAlert(message) {
-  alertCount++;
-  alertBadge.style.display = "inline-block";
-  alertBadge.textContent = alertCount;
+  alertCount++;  // Increment alert count each time an alert is triggered.
+  alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible.
+  alertBadge.textContent = alertCount;  // Update the alert count.
 
+  // Create a new alert item
   const alertItem = document.createElement("div");
   alertItem.className = "card alert";
   alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
-  alertsList.prepend(alertItem);
+
+  // Prepend the alert item to the alerts list
+  alertsList.prepend(alertItem); 
+
+  // Check if there are alerts and display the appropriate message
+  if (alertCount > 0) {
+    alertsList.style.display = "block"; // Ensure alerts are shown if there are any
+  } else {
+    alertsList.style.display = "none"; // Hide alerts section if no alerts
+  }
 }
+
 
 // ======== SIMULATION TOOL ========
 function simulateData() {
@@ -475,6 +486,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
