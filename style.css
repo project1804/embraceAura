@@ -85,113 +85,47 @@ body {
   transform: scale(1.02);
 }
 
-/* Wellness Overview Header */
-.wellness-overview h3 {
-  font-size: 1.8em;
+/* Mood Support Styling */
+.mood-support {
+  background: #e3f2fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.mood-section {
   margin-bottom: 15px;
-  color: #4a148c;
-  font-weight: bold;
-  text-align: center;
-  font-family: 'Arial Rounded MT Bold', sans-serif;
-}
-
-/* Wellness Overview Data Container */
-.wellness-data {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.wellness-box {
-  background: #f3f4f6;
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 30%;
+  background: #e1f5fe;
 }
 
-.wellness-box i {
-  font-size: 2.5em; /* Larger icon size */
-  margin-bottom: 10px;
-  color: #FF7043;
+.mood-section button {
+  background: #81d4fa;
 }
 
-.wellness-box p {
-  font-size: 1.3em;
-  color: #333;
-  font-weight: bold;
+.mood-section button:hover {
+  background: #4fc3f7;
 }
 
-.wellness-box span {
-  display: block;
-  font-size: 1.1em;
-  margin-top: 5px;
-  color: #888;
-}
-
-.temperature {
-  font-size: 2.5em; /* Larger text */
-  font-weight: bold;
-  color: #FF7043;
-}
-
-/* Icon styling for each metric */
-.wellness-overview i {
-  color: #FF7043;
-  font-size: 2.5em;
+/* Icon Styling */
+.mood-section i {
+  font-size: 2em;
   margin-right: 10px;
 }
 
-/* Add hover effect for icons */
-.wellness-overview i:hover {
-  color: #d32f2f;
-  transform: scale(1.2);
-}
-
-/* Button styling */
-.suggestions button {
-  display: block;
-  background: #fce4ec;
-  border: none;
+/* Caregiver Button */
+#caregiverButton button {
+  background: #ffb74d;
   padding: 12px;
-  margin: 5px 0;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  width: 100%;
 }
 
-.suggestions button:hover {
-  background: #f8bbd0;
+#caregiverButton button:hover {
+  background: #ff8c00;
 }
 
-/* Alert style */
-.alert {
-  background: #ffebee;
-  color: #c62828;
-}
-
-/* Badge style for alerts */
-.badge {
-  background: red;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 50%;
-  font-size: 0.8em;
-}
-
-/* Muted text style */
-.muted {
-  color: #888;
-}
-
-.illustration {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  margin-bottom: 10px;
-  border: 3px solid #fff;
-}
+/* Additional styling for the rest of the page ... */
