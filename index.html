@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>EmbraceAura</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* Circular image style */
+    .illustration {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 10px;
+    }
+    /* Countdown styling */
+    .countdown {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+  </style>
 </head>
   
 <body>
@@ -36,19 +54,24 @@
       <small id="lastUpdated">Updated: --</small>
     </div>
 
-    <div class="card">
-      <h3><i class="fas fa-chart-line"></i> Health Data Trends</h3>
-      <canvas id="healthChart" style="width:100%;height:240px;"></canvas>
-    </div>
+    <!-- add this right after the wellness-overview card -->
+<div class="card">
+  <h3><i class="fas fa-chart-line"></i> Health Data Trends</h3>
+  <canvas id="healthChart" style="width:100%;height:240px;"></canvas>
+</div>
+
 
     <div id="suggestionCard" class="card suggestions" style="display:none;">
       <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
+
+      <!-- NEW: Music choice dropdown -->
       <label for="musicChoice"><i class="fas fa-music"></i> Music Choice:</label>
       <select id="musicChoice">
         <option value="calming.mp3">Calming Music</option>
         <option value="zikir.mp3">Zikir</option>
       </select>
+
       <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play/Pause Music</button>
       <button onclick="startBreathing()"><i class="fas fa-wind"></i> Guided Breathing</button>
       <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
@@ -61,6 +84,8 @@
       <label>Stress Level: <input type="number" id="simStress" value="20"></label><br>
       <label><input type="checkbox" id="simPush"> Push to Firebase</label><br>
       <button onclick="simulateData()">Simulate</button>
+      
+      <!-- NEW: 5-minute simulation button -->
       <button onclick="simulateFiveMinutesPassed()">Simulate 5 Minutes Passed</button>
     </div>
 
@@ -99,3 +124,118 @@
   <script src="//code.tidio.co/tytivg7scrqy215fg6hqqoe9m4tpnrv4.js" async></script>
 </body>
 </html>
+
+this is my style.css :
+body {
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  background: #fffaf5;
+  margin: 0;
+}
+
+/* Navigation bar */
+.navbar {
+  background: #ffe0b2;
+  padding: 10px;
+  text-align: center;
+}
+
+.navbar button {
+  background: #ffcc80;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.navbar button:hover {
+  background: #ffb74d;
+}
+
+/* Panels */
+.panel {
+  display: none;
+  padding: 20px;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.panel.active {
+  display: block;
+}
+
+/* Mom panel - purple gradient */
+.mom-panel {
+  background: linear-gradient(135deg, #e1bee7, #ba68c8);
+  color: #222;
+}
+
+/* Caregiver panel - orange gradient */
+.caregiver-panel {
+  background: linear-gradient(135deg, #ffe0b2, #ffb74d);
+  color: #333;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.temperature {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.suggestions button {
+  display: block;
+  background: #fce4ec;
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.suggestions button:hover {
+  background: #f8bbd0;
+}
+
+.alert {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.badge {
+  background: red;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 50%;
+  font-size: 0.8em;
+}
+
+.muted {
+  color: #888;
+}
+
+.illustration {
+  width: 150px;           /* Control size */
+  height: 150px;          /* Keep it square for perfect circle */
+  object-fit: cover;      /* Crop without stretching */
+  border-radius: 50%;     /* Makes it circular */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Soft shadow */
+  margin-bottom: 10px;
+  border: 3px solid #fff; /* Optional white border for a "card" feel */
+}
