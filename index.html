@@ -25,12 +25,14 @@
 
     <div class="card wellness-overview">
       <h3><i class="fas fa-leaf"></i> Wellness Overview</h3>
-      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="heartRateDisplay">-- bpm</span></p>
-      <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
-      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
+      <div class="status">
+        <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="heartRateDisplay">-- bpm</span></p>
+        <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
+        <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
+      </div>
       <p>
-        Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
-        Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
+        Temperature Status: <span id="tempStatus">Normal</span> | 
+        Stress Status: <span id="stressStatus">Normal</span> | 
         Heart Rate Status: <span id="heartRateStatus">High Heart Rate</span>
       </p>
       <small id="lastUpdated">Updated: --</small>
@@ -44,14 +46,18 @@
     <div id="suggestionCard" class="card suggestions" style="display:none;">
       <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
+      
       <label for="musicChoice"><i class="fas fa-music"></i> Music Choice:</label>
       <select id="musicChoice">
         <option value="calming.mp3">Calming Music</option>
         <option value="zikir.mp3">Zikir</option>
       </select>
-      <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play/Pause Music</button>
-      <button onclick="startBreathing()"><i class="fas fa-wind"></i> Guided Breathing</button>
-      <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
+
+      <div class="mood-buttons">
+        <button onclick="toggleMusic()"><i class="fas fa-music"></i> Play/Pause Music</button>
+        <button onclick="startBreathing()"><i class="fas fa-wind"></i> Guided Breathing</button>
+        <button onclick="showAffirmation()"><i class="fas fa-smile"></i> Show Affirmation</button>
+      </div>
     </div>
 
     <div class="card">
@@ -74,9 +80,11 @@
     <div class="card">
       <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
       <h2>Caregiver Dashboard</h2>
-      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
-      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
-      <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
+      <div class="status">
+        <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
+        <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
+        <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
+      </div>
       <small id="careUpdated">Updated: --</small>
       <div class="countdown">Next update in: <span id="careCountdown">60</span>s</div>
     </div>
@@ -86,9 +94,11 @@
       <div id="alertsList" class="alerts">
         <div class="muted">No alerts yet.</div>
       </div>
-      <button onclick="markAllHandled()">Mark All Handled</button>
-      <button onclick="clearAlerts()">Clear Alerts</button>
-      <button onclick="callNow()">Call Now</button>
+      <div class="alert-buttons">
+        <button onclick="markAllHandled()">Mark All Handled</button>
+        <button onclick="clearAlerts()">Clear Alerts</button>
+        <button onclick="callNow()">Call Now</button>
+      </div>
     </div>
   </div>
 
