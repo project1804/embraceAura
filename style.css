@@ -88,25 +88,49 @@ body {
 /* Wellness Overview Header */
 .wellness-overview h3 {
   font-size: 1.8em;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   color: #4a148c;
   font-weight: bold;
   text-align: center;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
 }
 
-.wellness-overview p {
-  font-size: 1.1em;
-  color: #333;
-  margin: 8px 0;
+/* Wellness Overview Data Container */
+.wellness-data {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.wellness-overview i {
-  font-size: 2em; /* Larger icon size */
-  margin-right: 10px;
+.wellness-box {
+  background: #f3f4f6;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 30%;
+}
+
+.wellness-box i {
+  font-size: 2.5em; /* Larger icon size */
+  margin-bottom: 10px;
   color: #FF7043;
 }
 
-/* Temperature status */
+.wellness-box p {
+  font-size: 1.3em;
+  color: #333;
+  font-weight: bold;
+}
+
+.wellness-box span {
+  display: block;
+  font-size: 1.1em;
+  margin-top: 5px;
+  color: #888;
+}
+
 .temperature {
   font-size: 2.5em; /* Larger text */
   font-weight: bold;
@@ -116,13 +140,8 @@ body {
 /* Icon styling for each metric */
 .wellness-overview i {
   color: #FF7043;
-  font-size: 2.5em; /* Larger size */
+  font-size: 2.5em;
   margin-right: 10px;
-}
-
-/* Adjust spacing for better readability */
-.wellness-overview p {
-  line-height: 1.6;
 }
 
 /* Add hover effect for icons */
@@ -167,7 +186,6 @@ body {
   color: #888;
 }
 
-/* Illustration image */
 .illustration {
   width: 150px;
   height: 150px;
