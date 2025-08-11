@@ -346,18 +346,29 @@ function hideSuggestions() {
 }
 
 function pushAlert(message) {
-  console.log('Pushing alert:', message);  // Debugging: check if this is called
-  alertCount++;  // Increment alert count each time an alert is triggered.
-  alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible.
-  alertBadge.textContent = alertCount;  // Update the alert count.
+  console.log('Pushing alert:', message);  // Debugging: Check if this is called
+
+  if (!alertBadge) {
+    console.error('alertBadge not found!');
+    return;  // Exit if alertBadge is not found
+  }
+
+  alertCount++;  // Increment alert count each time an alert is triggered
+
+  alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible
+  alertBadge.textContent = alertCount;  // Update the alert count
+
+  // Ensure alertsList is found
+  const alertsList = document.getElementById("alertsList");
+  if (!alertsList) {
+    console.error('alertsList not found!');
+    return;  // Exit if alertsList is not found
+  }
 
   // Create a new alert item
   const alertItem = document.createElement("div");
   alertItem.className = "card alert";
   alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
-
-  // Prepend the alert item to the alerts list
-  const alertsList = document.getElementById("alertsList");
 
   // Clear the "No alerts yet" message if present
   const mutedText = alertsList.querySelector(".muted");
@@ -375,7 +386,6 @@ function pushAlert(message) {
     alertsList.style.display = "none";  // Hide alerts section if no alerts
   }
 }
-
 
 
 
@@ -498,6 +508,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
