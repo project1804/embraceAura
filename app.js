@@ -165,7 +165,7 @@ setInterval(() => {
 }, 60 * 1000); // 60s
 
 // ======== FIREBASE LISTENER ========
-db.ref("Headband/skin").on("value", snapshot => {
+db.ref("Headband/Skin").on("value", snapshot => {
   const skinTemp = snapshot.val(); // Get the skin temperature from Firebase
   if (skinTemp !== null) {
     // Assuming sensor data includes skin (temperature)
@@ -442,3 +442,4 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
+
