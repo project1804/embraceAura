@@ -214,10 +214,10 @@ db.ref("sensorData").on("value", snapshot => {
 
 // ======== UPDATE UI FUNCTIONS ========
 function updateMomDashboard(data) {
-  tempDisplay.textContent = ${data.temperature.toFixed(1)} \u00B0C;
-  heartRateDisplay.textContent = ${data.heartRate} bpm;
+  tempDisplay.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+  heartRateDisplay.textContent = `${data.heartRate} bpm`;
   stressDisplay.textContent = data.stressLevel;
-  lastUpdatedEl.textContent = Updated: ${new Date(data.timestamp).toLocaleTimeString()};
+  lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 
   tempStatus.textContent = data.temperature > HIGH_TEMP_THRESHOLD ? "High Temperature" : "Normal";
   tempStatus.classList.toggle("alert", data.temperature > HIGH_TEMP_THRESHOLD);
@@ -230,10 +230,10 @@ function updateMomDashboard(data) {
 }
 
 function updateCaregiverDashboard(data) {
-  careTemp.textContent = ${data.temperature.toFixed(1)} \u00B0C;
-  careHR.textContent = ${data.heartRate} bpm;
+  careTemp.textContent = `${data.temperature.toFixed(1)} \u00B0C`;
+  careHR.textContent = `${data.heartRate} bpm`;
   careStress.textContent = data.stressLevel;
-  careUpdated.textContent = Updated: ${new Date(data.timestamp).toLocaleTimeString()};
+  careUpdated.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 }
 
 // ======== ALERT CHECKING ========
@@ -248,7 +248,7 @@ function checkAlerts(data, isSim = false) {
     if (temperature > HIGH_TEMP_THRESHOLD) {
       if (!simHighTempStart) simHighTempStart = now;
       else if (now - simHighTempStart >= HIGH_ALERT_DURATION) {
-        pushAlert(Simulation: Temperature ${temperature.toFixed(1)} \u00B0C for 5 min);
+        pushAlert(`Simulation: Temperature ${temperature.toFixed(1)} \u00B0C for 5 min`);
         anyAlert = true;
         simHighTempStart = null;
       }
@@ -257,7 +257,7 @@ function checkAlerts(data, isSim = false) {
     if (stressLevel > HIGH_STRESS_THRESHOLD) {
       if (!simHighStressStart) simHighStressStart = now;
       else if (now - simHighStressStart >= HIGH_ALERT_DURATION) {
-        pushAlert(Simulation: Stress Level ${stressLevel} for 5 min);
+        pushAlert(`Simulation: Stress Level ${stressLevel} for 5 min`);
         anyAlert = true;
         simHighStressStart = null;
       }
@@ -266,7 +266,7 @@ function checkAlerts(data, isSim = false) {
     if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
       if (!simHighHeartRateStart) simHighHeartRateStart = now;
       else if (now - simHighHeartRateStart >= HIGH_ALERT_DURATION) {
-        pushAlert(Simulation: Heart Rate ${heartRate} bpm for 5 min);
+        pushAlert(`Simulation: Heart Rate ${heartRate} bpm for 5 min`);
         anyAlert = true;
         simHighHeartRateStart = null;
       }
@@ -281,7 +281,7 @@ function checkAlerts(data, isSim = false) {
   if (temperature > HIGH_TEMP_THRESHOLD) {
     if (!highTempStart) highTempStart = now;
     else if (now - highTempStart >= HIGH_ALERT_DURATION) {
-      pushAlert(Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min);
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
       anyAlert = true;
       highTempStart = null;
     }
@@ -290,7 +290,7 @@ function checkAlerts(data, isSim = false) {
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
     if (!highStressStart) highStressStart = now;
     else if (now - highStressStart >= HIGH_ALERT_DURATION) {
-      pushAlert(Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min);
+      pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
       anyAlert = true;
       highStressStart = null;
     }
@@ -299,7 +299,7 @@ function checkAlerts(data, isSim = false) {
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) highHeartRateStart = now;
     else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min); // preserved original message
+      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 1 min`); // preserved original message
       anyAlert = true;
       highHeartRateStart = null;
     }
@@ -358,7 +358,7 @@ function pushAlert(message) {
 
   const alertItem = document.createElement("div");
   alertItem.className = "card alert";
-  alertItem.textContent = ${new Date().toLocaleTimeString()} — ${message};
+  alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
   alertsList.prepend(alertItem);
 }
 
@@ -452,14 +452,14 @@ function callNow() {
 window.callNow = callNow;
 
 function markAllHandled() {
-  alertsList.innerHTML = <div class="muted">All alerts handled.</div>;
+  alertsList.innerHTML = `<div class="muted">All alerts handled.</div>`;
   alertCount = 0;
   alertBadge.style.display = "none";
 }
 window.markAllHandled = markAllHandled;
 
 function clearAlerts() {
-  alertsList.innerHTML = <div class="muted">No alerts yet.</div>;
+  alertsList.innerHTML = `<div class="muted">No alerts yet.</div>`;
   alertCount = 0;
   alertBadge.style.display = "none";
 }
