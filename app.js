@@ -356,15 +356,17 @@ function pushAlert(message) {
   alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
 
   // Prepend the alert item to the alerts list
+  const alertsList = document.getElementById("alertsList");
   alertsList.prepend(alertItem); 
 
-  // Check if there are alerts and display the appropriate message
+  // Ensure the alerts section is visible when alerts are present
   if (alertCount > 0) {
-    alertsList.style.display = "block"; // Ensure alerts are shown if there are any
+    alertsList.style.display = "block";  // Show alerts if there are any
   } else {
-    alertsList.style.display = "none"; // Hide alerts section if no alerts
+    alertsList.style.display = "none";  // Hide alerts section if no alerts
   }
 }
+
 
 
 // ======== SIMULATION TOOL ========
@@ -486,6 +488,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
