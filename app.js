@@ -346,6 +346,7 @@ function hideSuggestions() {
 }
 
 function pushAlert(message) {
+  console.log('Pushing alert:', message);  // Debugging: check if this is called
   alertCount++;  // Increment alert count each time an alert is triggered.
   alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible.
   alertBadge.textContent = alertCount;  // Update the alert count.
@@ -374,6 +375,7 @@ function pushAlert(message) {
     alertsList.style.display = "none";  // Hide alerts section if no alerts
   }
 }
+
 
 
 
@@ -496,6 +498,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
