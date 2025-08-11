@@ -71,18 +71,73 @@ body {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-top: 15px;
+  padding: 30px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease;
   font-size: 1.2em;
+  text-align: center;
+  border: 2px solid #ddd; /* Adds a subtle border */
 }
 
 .wellness-overview:hover {
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   transform: scale(1.02);
+}
+
+/* Wellness Overview Header */
+.wellness-overview h3 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #4a148c;
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+}
+
+/* Wellness Data Styling */
+.wellness-data {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.wellness-box {
+  background: #f3f4f6;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 28%;
+  margin: 10px;
+  transition: background 0.3s ease;
+}
+
+.wellness-box:hover {
+  background: #e1f5fe;
+}
+
+.wellness-box i {
+  font-size: 3.5em; /* Larger icon size */
+  margin-bottom: 10px;
+  color: #FF7043;
+}
+
+.wellness-box p {
+  font-size: 1.4em;
+  color: #333;
+  font-weight: bold;
+}
+
+.wellness-box span {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #888;
 }
 
 /* Mood Support Styling */
@@ -115,17 +170,27 @@ body {
   margin-right: 10px;
 }
 
-/* Caregiver Button */
+/* Call caregiver button styling */
 #caregiverButton button {
   background: #ffb74d;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 15px;
+  border-radius: 12px;
   cursor: pointer;
   width: 100%;
+  font-size: 1.2em;
+  color: white;
+  border: none;
+  transition: background 0.3s ease;
 }
 
 #caregiverButton button:hover {
   background: #ff8c00;
 }
 
-/* Additional styling for the rest of the page ... */
+/* Add padding to the overall body */
+body {
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  background: #fffaf5;
+  margin: 0;
+  padding: 20px;
+}
