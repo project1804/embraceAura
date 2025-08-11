@@ -23,10 +23,22 @@
       margin-top: 5px;
       font-style: italic;
     }
-    /* Image size */
+    /* Image styling */
+    .status-image-container {
+      text-align: center;
+      margin: 10px;
+      display: inline-block;
+      width: 100px; /* Control image size */
+    }
     .status-image {
-      width: 50px;
-      height: 50px;
+      width: 80px; /* Image size */
+      height: 80px;
+    }
+    .status-label {
+      margin-top: 5px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #333;
     }
   </style>
 </head>
@@ -51,9 +63,11 @@
       <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
       <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
       <p>
-        Temperature Status: <img id="tempStatus" class="status-image" src="cool_temp.gif" alt="Temperature Status"> &nbsp; | &nbsp;
-        Stress Status: <img id="stressStatus" class="status-image" src="low_stress.jpg" alt="Stress Status"> &nbsp; | &nbsp;
-        Heart Rate Status: <img id="heartRateStatus" class="status-image" src="slow_heart.gif" alt="Heart Rate Status">
+        Temperature Status: <div class="status-image-container"><img id="tempStatus" class="status-image" src="cool_temp.gif" alt="Temperature Status"><div class="status-label">Normal Temperature</div></div>
+        &nbsp; | &nbsp;
+        Stress Status: <div class="status-image-container"><img id="stressStatus" class="status-image" src="low_stress.jpg" alt="Stress Status"><div class="status-label">Low Stress</div></div>
+        &nbsp; | &nbsp;
+        Heart Rate Status: <div class="status-image-container"><img id="heartRateStatus" class="status-image" src="slow_heart.gif" alt="Heart Rate Status"><div class="status-label">Normal Heart Rate</div></div>
       </p>
       <small id="lastUpdated">Updated: --</small>
     </div>
