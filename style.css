@@ -65,9 +65,54 @@ body {
   to {opacity: 1; transform: translateY(0);}
 }
 
+/* New style for Wellness Overview */
+.wellness-overview {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.wellness-overview:hover {
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.wellness-overview h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #4a148c;
+  font-weight: bold;
+  text-align: center;
+}
+
+.wellness-overview p {
+  font-size: 1.1em;
+  color: #333;
+  margin: 8px 0;
+}
+
+.wellness-overview i {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
 .temperature {
   font-size: 2em;
   font-weight: bold;
+  color: #FF7043;
+}
+
+/* Icon styling for the wellness overview */
+.wellness-overview i {
+  color: #FF7043;
+  font-size: 1.8em;
+  margin-right: 10px;
 }
 
 .suggestions button {
