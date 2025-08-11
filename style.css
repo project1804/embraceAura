@@ -6,68 +6,6 @@ body {
   padding: 20px;
 }
 
-/* Navigation bar */
-.navbar {
-  background: #ffe0b2;
-  padding: 10px;
-  text-align: center;
-}
-
-.navbar button {
-  background: #ffcc80;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 5px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.navbar button:hover {
-  background: #ffb74d;
-}
-
-/* Panels */
-.panel {
-  display: none;
-  padding: 20px;
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-}
-
-.panel.active {
-  display: block;
-}
-
-/* Mom panel - purple gradient */
-.mom-panel {
-  background: linear-gradient(135deg, #e1bee7, #ba68c8);
-  color: #222;
-}
-
-/* Caregiver panel - orange gradient */
-.caregiver-panel {
-  background: linear-gradient(135deg, #ffe0b2, #ffb74d);
-  color: #333;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  padding: 20px;
-  margin: 15px 0;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
-  animation: fadeIn 0.4s ease;
-}
-
-/* Fading animation for cards */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 /* Wellness Overview Styling */
 .wellness-overview {
   background: #ffffff;
@@ -89,25 +27,7 @@ body {
   transform: scale(1.02);
 }
 
-/* Wellness Overview Header */
-.wellness-overview h3 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: #4a148c;
-  font-weight: bold;
-  text-align: center;
-  font-family: 'Arial Rounded MT Bold', sans-serif;
-}
-
 /* Wellness Data Styling */
-.wellness-data {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
 .wellness-box {
   background: #f3f4f6;
   padding: 20px;
@@ -142,54 +62,7 @@ body {
   color: #888;
 }
 
-/* Mood Support Styling */
-.mood-support {
-  background: #e3f2fd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.mood-section {
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #e1f5fe;
-}
-
-.mood-section button {
-  background: #81d4fa;
-}
-
-.mood-section button:hover {
-  background: #4fc3f7;
-}
-
-/* Icon Styling */
-.mood-section i {
-  font-size: 2em;
-  margin-right: 10px;
-}
-
-/* Call caregiver button styling */
-#caregiverButton button {
-  background: #ffb74d;
-  padding: 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 1.2em;
-  color: white;
-  border: none;
-  transition: background 0.3s ease;
-}
-
-#caregiverButton button:hover {
-  background: #ff8c00;
-}
-
-/* Temperature text fix for mobile view */
+/* Temperature Text Styling */
 .temperature-display {
   font-size: 16px;
   word-wrap: break-word;
@@ -198,6 +71,9 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap; /* Prevents the text from wrapping */
   padding: 5px;
+  text-align: center; /* Centers the text inside the box */
+  font-weight: bold;
+  color: #333;
 }
 
 /* Status Text Styling: Normal vs High */
@@ -208,6 +84,8 @@ body {
   padding: 10px;
   border-radius: 12px;
   transition: background 0.3s ease;
+  display: inline-block; /* Keeps the status in line */
+  margin: 5px 0;
 }
 
 .status-normal {
@@ -222,6 +100,8 @@ body {
 
 .status i {
   margin-right: 8px;
+  font-size: 1.5em; /* Icon size */
+  vertical-align: middle;
 }
 
 /* Icons for Normal/High Status */
