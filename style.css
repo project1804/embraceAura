@@ -288,6 +288,38 @@ body {
     padding: 8px;
   }
 }
+  /* Temperature text fix for mobile view */
+.temperature-display {
+  font-size: 16px;
+  word-wrap: break-word;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevents the text from wrapping */
+  padding: 5px;
+  text-align: center; /* Centers the text inside the box */
+  font-weight: bold;
+  color: #333;
+}
+
+/* For mobile view */
+@media (max-width: 768px) {
+  .wellness-box {
+    width: 45%;
+    margin: 5px;
+  }
+
+  .temperature-display {
+    font-size: 14px;
+  }
+
+  .status {
+    font-size: 1.2em;
+    padding: 8px;
+  }
+}
+
 
 }
+
 
