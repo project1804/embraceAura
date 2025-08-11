@@ -54,18 +54,19 @@ body {
 .card {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
-  padding: 15px;
+  padding: 20px;
   margin: 15px 0;
   box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
   animation: fadeIn 0.4s ease;
 }
 
+/* Fading animation for cards */
 @keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* New style for Wellness Overview */
+/* Wellness Overview Styling */
 .wellness-overview {
   background: #ffffff;
   border-radius: 12px;
@@ -76,6 +77,7 @@ body {
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease;
+  font-size: 1.2em;
 }
 
 .wellness-overview:hover {
@@ -83,8 +85,9 @@ body {
   transform: scale(1.02);
 }
 
+/* Wellness Overview Header */
 .wellness-overview h3 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   margin-bottom: 10px;
   color: #4a148c;
   font-weight: bold;
@@ -98,28 +101,42 @@ body {
 }
 
 .wellness-overview i {
-  font-size: 1.5em;
+  font-size: 2em; /* Larger icon size */
   margin-right: 10px;
+  color: #FF7043;
 }
 
+/* Temperature status */
 .temperature {
-  font-size: 2em;
+  font-size: 2.5em; /* Larger text */
   font-weight: bold;
   color: #FF7043;
 }
 
-/* Icon styling for the wellness overview */
+/* Icon styling for each metric */
 .wellness-overview i {
   color: #FF7043;
-  font-size: 1.8em;
+  font-size: 2.5em; /* Larger size */
   margin-right: 10px;
 }
 
+/* Adjust spacing for better readability */
+.wellness-overview p {
+  line-height: 1.6;
+}
+
+/* Add hover effect for icons */
+.wellness-overview i:hover {
+  color: #d32f2f;
+  transform: scale(1.2);
+}
+
+/* Button styling */
 .suggestions button {
   display: block;
   background: #fce4ec;
   border: none;
-  padding: 10px;
+  padding: 12px;
   margin: 5px 0;
   border-radius: 10px;
   cursor: pointer;
@@ -130,11 +147,13 @@ body {
   background: #f8bbd0;
 }
 
+/* Alert style */
 .alert {
   background: #ffebee;
   color: #c62828;
 }
 
+/* Badge style for alerts */
 .badge {
   background: red;
   color: white;
@@ -143,16 +162,18 @@ body {
   font-size: 0.8em;
 }
 
+/* Muted text style */
 .muted {
   color: #888;
 }
 
+/* Illustration image */
 .illustration {
-  width: 150px;           /* Control size */
-  height: 150px;          /* Keep it square for perfect circle */
-  object-fit: cover;      /* Crop without stretching */
-  border-radius: 50%;     /* Makes it circular */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Soft shadow */
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   margin-bottom: 10px;
-  border: 3px solid #fff; /* Optional white border for a "card" feel */
+  border: 3px solid #fff;
 }
