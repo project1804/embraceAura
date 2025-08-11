@@ -1,6 +1,6 @@
 // ======== FIREBASE CONFIG ========
 const firebaseConfig = {
-  apiKey: "AIzaSyDojXgXigZkJLLji5VVkKFFxfoSUPH-s7I",
+apiKey: "AIzaSyDojSgXigZkJLLji5VVkKFFxfoSUPH-s7I",
   authDomain: "embraceaura-4c3ca.firebaseapp.com",
   databaseURL: "https://embraceaura-4c3ca-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "embraceaura-4c3ca",
@@ -464,3 +464,4 @@ function clearAlerts() {
   alertBadge.style.display = "none";
 }
 window.clearAlerts = clearAlerts;
+
