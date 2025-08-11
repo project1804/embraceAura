@@ -296,6 +296,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
   }
 
+  // If any alert occurred, show suggestions and start countdown
   if (anyAlert) {
     showSuggestions();
     startCountdown(HIGH_ALERT_DURATION);
@@ -304,6 +305,7 @@ function checkAlerts(data, isSim = false) {
     stopCountdown();
   }
 }
+
 
 
 // ======== COUNTDOWN FUNCTIONS ========
@@ -473,6 +475,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
