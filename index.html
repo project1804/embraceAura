@@ -29,8 +29,8 @@
       <p><i class="fas fa-brain"></i> Stress Level: <span id="stressLevelDisplay">--</span></p>
       <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="temperatureDisplay">-- °C</span></p>
       <p>
-        Temperature Status: <span id="tempStatus">Normal</span> &nbsp; | &nbsp;
-        Stress Status: <span id="stressStatus">Normal</span> &nbsp; | &nbsp;
+        Temperature Status: <span id="tempStatus">Normal</span> | 
+        Stress Status: <span id="stressStatus">Normal</span> | 
         Heart Rate Status: <span id="heartRateStatus">High Heart Rate</span>
       </p>
       <small id="lastUpdated">Updated: --</small>
@@ -86,9 +86,11 @@
       <div id="alertsList" class="alerts">
         <div class="muted">No alerts yet.</div>
       </div>
-      <button onclick="markAllHandled()">Mark All Handled</button>
-      <button onclick="clearAlerts()">Clear Alerts</button>
-      <button onclick="callNow()">Call Now</button>
+      <div class="alert-buttons">
+        <button onclick="markAllHandled()">Mark All Handled</button>
+        <button onclick="clearAlerts()">Clear Alerts</button>
+        <button onclick="callNow()">Call Now</button>
+      </div>
     </div>
   </div>
 
@@ -97,5 +99,17 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="app.js" charset="UTF-8"></script>
   <script src="//code.tidio.co/tytivg7scrqy215fg6hqqoe9m4tpnrv4.js" async></script>
+
+  <script>
+    // Switch between panels when clicking the buttons
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Hide all panels
+        document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+        // Show the clicked panel
+        document.getElementById(btn.dataset.panel).classList.add("active");
+      });
+    });
+  </script>
 </body>
 </html>
