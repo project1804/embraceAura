@@ -215,50 +215,49 @@ function updateCaregiverDashboard(data) {
 }
 
 // ======== ALERT CHECKING ========
-// ======== NEW: SUGGESTIONS AFTER 5 MINUTES ========
 function checkAlerts(data, isSim = false) {
   const now = Date.now();
   const { temperature, stressLevel, heartRate } = data;
 
   let anyAlert = false;
 
-  // Real sensor logic
-  // Check if the readings are above threshold
+  // Check if any reading is above threshold
   if (temperature > HIGH_TEMP_THRESHOLD) {
-    // Start the timer if it's the first abnormal reading
-    if (!highTempStart) highTempStart = now;
-    else if (now - highTempStart >= HIGH_ALERT_DURATION) {  // 5 minutes passed
+    if (!highTempStart) {
+      highTempStart = now; // Start timer if first abnormal reading
+    } else if (now - highTempStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Alert triggered
     }
   } else {
-    highTempStart = null; // Reset if the temperature goes back to normal
+    highTempStart = null; // Reset if condition goes back to normal
   }
 
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
-    if (!highStressStart) highStressStart = now;
-    else if (now - highStressStart >= HIGH_ALERT_DURATION) {
+    if (!highStressStart) {
+      highStressStart = now; // Start timer if first abnormal reading
+    } else if (now - highStressStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Alert triggered
     }
   } else {
-    highStressStart = null; // Reset if stress level goes back to normal
+    highStressStart = null; // Reset if condition goes back to normal
   }
 
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    if (!highHeartRateStart) highHeartRateStart = now;
-    else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
+    if (!highHeartRateStart) {
+      highHeartRateStart = now; // Start timer if first abnormal reading
+    } else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
-      anyAlert = true;
+      anyAlert = true; // Alert triggered
     }
   } else {
-    highHeartRateStart = null; // Reset if heart rate goes back to normal
+    highHeartRateStart = null; // Reset if condition goes back to normal
   }
 
-  // **Caregiver button logic:**
-  // Only show caregiver button if **5 minutes** have passed after the first abnormal reading
+  // If any alert is triggered, update the caregiver UI
   if (anyAlert) {
-    showSuggestions();  // Show any suggestions (or wellness tools)
+    showSuggestions();  // Show any suggestions or wellness tools
     startCountdown(HIGH_ALERT_DURATION);  // Start countdown for caregiver action
   } else {
     hideSuggestions();  // Hide suggestions if no alerts
@@ -275,6 +274,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
   }
 }
+
 
 
 
@@ -479,6 +479,7 @@ function checkAlerts(data, isSim = false) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide the caregiver button
   }
 }
+
 
 
 
