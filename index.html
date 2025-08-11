@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
@@ -54,18 +54,15 @@
       <small id="lastUpdated">Updated: --</small>
     </div>
 
-    <!-- add this right after the wellness-overview card -->
-<div class="card">
-  <h3><i class="fas fa-chart-line"></i> Health Data Trends</h3>
-  <canvas id="healthChart" style="width:100%;height:240px;"></canvas>
-</div>
-
+    <div class="card">
+      <h3><i class="fas fa-chart-line"></i> Health Data Trends</h3>
+      <canvas id="healthChart" style="width:100%;height:240px;"></canvas>
+    </div>
 
     <div id="suggestionCard" class="card suggestions" style="display:none;">
       <h3><i class="fas fa-lightbulb"></i> Suggestions (Wellness Tool)</h3>
       <p>Your temperature is above high</p>
 
-      <!-- NEW: Music choice dropdown -->
       <label for="musicChoice"><i class="fas fa-music"></i> Music Choice:</label>
       <select id="musicChoice">
         <option value="calming.mp3">Calming Music</option>
@@ -84,8 +81,6 @@
       <label>Stress Level: <input type="number" id="simStress" value="20"></label><br>
       <label><input type="checkbox" id="simPush"> Push to Firebase</label><br>
       <button onclick="simulateData()">Simulate</button>
-      
-      <!-- NEW: 5-minute simulation button -->
       <button onclick="simulateFiveMinutesPassed()">Simulate 5 Minutes Passed</button>
     </div>
 
@@ -122,8 +117,21 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="app.js" charset="UTF-8"></script>
   <script src="//code.tidio.co/tytivg7scrqy215fg6hqqoe9m4tpnrv4.js" async></script>
+
+  <script>
+    // Switch between panels when clicking the buttons
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Hide all panels
+        document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+        // Show the clicked panel
+        const panelId = btn.dataset.panel;
+        const panelToShow = document.getElementById(panelId);
+        if (panelToShow) {
+          panelToShow.classList.add("active");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
-
-
-
