@@ -51,6 +51,18 @@ body {
 .caregiver-panel {
   background: linear-gradient(135deg, #ffe0b2, #ffb74d);
   color: #333;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+.caregiver-panel h2 {
+  font-size: 2em;
+  color: #ff7043;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .card {
@@ -191,7 +203,7 @@ body {
 
 /* Temperature text fix for mobile view */
 .temperature-display {
-  font-size: 16px;
+  font-size: 8px;
   word-wrap: break-word;
   max-width: 100%;
   overflow: hidden;
@@ -244,7 +256,7 @@ body {
   }
 
   .temperature-display {
-    font-size: 14px;
+    font-size: 8px;
   }
 
   .status {
@@ -252,3 +264,4 @@ body {
     padding: 8px;
   }
 }
+
