@@ -246,21 +246,15 @@ function checkAlerts(data, isSim = false) {
 
   let anyAlert = false;
 
-  // Check if any reading is above threshold
-  if (temperature > HIGH_TEMP_THRESHOLD) {
-    if (!highTempStart) {
-      highTempStart = now; // Start timer if first abnormal reading
-    } else if (now - highTempStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
-      anyAlert = true; // Alert triggered
-    }
-  } else {
-    highTempStart = null; // Reset if condition goes back to normal
-  }
+  // Debugging: Log current values and times for better insight
+  console.log('Current Time:', new Date(now).toLocaleTimeString());
+  console.log('Temperature:', temperature, 'Stress Level:', stressLevel, 'Heart Rate:', heartRate);
 
+  // Check if stress level is above the threshold
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
     if (!highStressStart) {
       highStressStart = now; // Start timer if first abnormal reading
+      console.log('High Stress Start Time:', highStressStart);
     } else if (now - highStressStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
       anyAlert = true; // Alert triggered
@@ -269,9 +263,24 @@ function checkAlerts(data, isSim = false) {
     highStressStart = null; // Reset if condition goes back to normal
   }
 
+  // Check if temperature is above the threshold
+  if (temperature > HIGH_TEMP_THRESHOLD) {
+    if (!highTempStart) {
+      highTempStart = now; // Start timer if first abnormal reading
+      console.log('High Temperature Start Time:', highTempStart);
+    } else if (now - highTempStart >= HIGH_ALERT_DURATION) {
+      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
+      anyAlert = true; // Alert triggered
+    }
+  } else {
+    highTempStart = null; // Reset if condition goes back to normal
+  }
+
+  // Check if heart rate is above the threshold
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
     if (!highHeartRateStart) {
       highHeartRateStart = now; // Start timer if first abnormal reading
+      console.log('High Heart Rate Start Time:', highHeartRateStart);
     } else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
       pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
       anyAlert = true; // Alert triggered
@@ -290,12 +299,16 @@ function checkAlerts(data, isSim = false) {
   }
 
   // Caregiver button should only show after 5 minutes of abnormal readings
-  if (temperature > HIGH_TEMP_THRESHOLD || stressLevel > HIGH_STRESS_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
+  // Check if any of the readings (temperature, stress, heart rate) are above threshold for 5 minutes
+  if (stressLevel > HIGH_STRESS_THRESHOLD || temperature > HIGH_TEMP_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
     const highAlertDuration = now - Math.max(highTempStart || 0, highStressStart || 0, highHeartRateStart || 0);
     if (highAlertDuration >= HIGH_ALERT_DURATION) {
       document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
+      console.log('Caregiver Button Shown');
     }
   } else {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button if none of the readings are above threshold
   }
 }
+
+
