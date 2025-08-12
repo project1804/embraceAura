@@ -46,6 +46,9 @@ body {
   background: linear-gradient(135deg, #e1bee7, #ba68c8);
   color: #222;
 }
+.mom-panel #alertsList {
+  display: none;
+}
 
 /* Caregiver panel - orange gradient */
 .caregiver-panel {
@@ -395,6 +398,7 @@ header h1::before {
   vertical-align: middle;
   font-size: 40px;
 }
+
 
 
 
