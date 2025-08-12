@@ -252,14 +252,14 @@ body {
   .status {
     font-size: 1.2em;
     padding: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
 
   /* Additional mobile fix for large status texts */
   .status-normal, .status-high {
     width: 90%; /* Allow some margin on sides */
     margin: 0 auto; /* Center status text */
-    font-size: 1.3em; /* Slightly reduce font size on small screens */
+    font-size: 1.1em; /* Slightly reduce font size on small screens */
   }
 
   /* Ensure the caregiver button fits on smaller screens */
@@ -291,4 +291,5 @@ header h1::before {
   vertical-align: middle;
   font-size: 40px;
 }
+
 
