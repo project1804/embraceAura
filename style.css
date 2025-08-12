@@ -52,6 +52,77 @@ body {
   background: linear-gradient(135deg, #ffe0b2, #ffb74d);
   color: #333;
 }
+/* Caregiver Wellness Overview */
+.caregiver-panel .wellness-overview {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.caregiver-panel .wellness-box {
+  background: #f3f4f6;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 28%;
+  transition: background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caregiver-panel .wellness-box:hover {
+  background: #e1f5fe;
+}
+
+.caregiver-panel .wellness-box i {
+  font-size: 4em; /* Larger icon size */
+  margin-bottom: 10px;
+  color: #FF7043;
+}
+
+.caregiver-panel .wellness-box p {
+  font-size: 1.4em;
+  color: #333;
+  font-weight: bold;
+}
+
+.caregiver-panel .wellness-box span {
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #888;
+}
+
+/* Ensure it’s responsive for mobile */
+@media (max-width: 768px) {
+  .caregiver-panel .wellness-overview {
+    flex-direction: column; /* Stack wellness boxes vertically on mobile */
+    align-items: center;
+  }
+
+  .caregiver-panel .wellness-box {
+    width: 80%; /* Make wellness boxes more responsive */
+    margin: 10px 0;
+  }
+
+  .caregiver-panel .wellness-box i {
+    font-size: 3em; /* Slightly smaller icons on mobile */
+  }
+
+  .caregiver-panel .wellness-box p {
+    font-size: 1.3em; /* Adjust font size for mobile */
+  }
+
+  .caregiver-panel .wellness-box span {
+    font-size: 1.1em;
+  }
+}
 
 .card {
   background: rgba(255, 255, 255, 0.9);
@@ -320,6 +391,7 @@ header h1::before {
   vertical-align: middle;
   font-size: 40px;
 }
+
 
 
 
