@@ -219,12 +219,18 @@ function updateMomDashboard(data) {
   lastUpdatedEl.textContent = `Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
 
   tempStatus.textContent = data.temperature > HIGH_TEMP_THRESHOLD ? "High Temperature" : "Normal";
+  tempStatus.classList.toggle("status-high", data.temperature > HIGH_TEMP_THRESHOLD);
+  tempStatus.classList.toggle("status-normal", data.temperature <= HIGH_TEMP_THRESHOLD);
   tempStatus.classList.toggle("alert", data.temperature > HIGH_TEMP_THRESHOLD);
 
   stressStatus.textContent = data.stressLevel > HIGH_STRESS_THRESHOLD ? "High Stress" : "Normal";
+  stressStatus.classList.toggle("status-high", data.stressLevel > HIGH_STRESS_THRESHOLD);
+  stressStatus.classList.toggle("status-normal", data.stressLevel <= HIGH_STRESS_THRESHOLD);
   stressStatus.classList.toggle("alert", data.stressLevel > HIGH_STRESS_THRESHOLD);
 
   heartRateStatus.textContent = data.heartRate > HIGH_HEARTRATE_THRESHOLD ? "High Heart Rate" : "Normal";
+  heartRateStatus.classList.toggle("status-high", data.heartRate > HIGH_HEARTRATE_THRESHOLD);
+  heartRateStatus.classList.toggle("status-normal", data.heartRate <= HIGH_HEARTRATE_THRESHOLD);
   heartRateStatus.classList.toggle("alert", data.heartRate > HIGH_HEARTRATE_THRESHOLD);
 }
 
@@ -387,6 +393,7 @@ function simulateFiveMinutesPassed() {
 }
 window.simulateData = simulateData;
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
 
 
 
