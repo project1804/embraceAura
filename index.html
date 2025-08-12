@@ -190,6 +190,23 @@
   <script src="//code.tidio.co/tytivg7scrqy215fg6hqqoe9m4tpnrv4.js" async></script>
 
   <script>
+     // Define the functions
+    function toggleMusic() {
+      const audio = document.getElementById("calmAudio");
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+
+    function startBreathing() {
+      alert("Breathing exercise started!");  // Placeholder functionality; replace with actual logic
+    }
+
+    function showAffirmation() {
+      alert("Affirmation shown!");  // Placeholder functionality; replace with actual logic
+    }
     // Switch between panels when clicking the buttons
     document.querySelectorAll(".nav-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -206,5 +223,6 @@
   </script>
 </body>
 </html>
+
 
 
