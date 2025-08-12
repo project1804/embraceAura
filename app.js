@@ -237,7 +237,6 @@ function updateCaregiverDashboard(data) {
 }
 
 // ======== ALERT CHECKING ========
-// Check for abnormal readings and trigger alerts
 function checkAlerts(data) {
   const now = Date.now();
   const { temperature, stressLevel, heartRate } = data;
@@ -246,59 +245,81 @@ function checkAlerts(data) {
 
   // Check if stress level is above the threshold
   if (stressLevel > HIGH_STRESS_THRESHOLD) {
-    if (!highStressStart) {
-      highStressStart = now; // Start timer if first abnormal reading
-    } else if (now - highStressStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD} for 5 min`);
-      anyAlert = true;
-    }
-  } else {
-    highStressStart = null;
+    pushAlert(`Stress level above ${HIGH_STRESS_THRESHOLD}`);
+    anyAlert = true;
   }
 
   // Check if temperature is above the threshold
   if (temperature > HIGH_TEMP_THRESHOLD) {
-    if (!highTempStart) {
-      highTempStart = now;
-    } else if (now - highTempStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C for 5 min`);
-      anyAlert = true;
-    }
-  } else {
-    highTempStart = null;
+    pushAlert(`Temperature above ${HIGH_TEMP_THRESHOLD}\u00B0C`);
+    anyAlert = true;
   }
 
   // Check if heart rate is above the threshold
   if (heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    if (!highHeartRateStart) {
-      highHeartRateStart = now;
-    } else if (now - highHeartRateStart >= HIGH_ALERT_DURATION) {
-      pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm for 5 min`);
-      anyAlert = true;
-    }
-  } else {
-    highHeartRateStart = null;
+    pushAlert(`Heart rate above ${HIGH_HEARTRATE_THRESHOLD} bpm`);
+    anyAlert = true;
   }
 
   // If any alert is triggered, show suggestions and start countdown
   if (anyAlert) {
     showSuggestions(); 
-    startCountdown(HIGH_ALERT_DURATION);
   } else {
     hideSuggestions();
-    stopCountdown();
   }
 
-  // Show caregiver button after 5 minutes of abnormal readings
+  // Show caregiver button when any reading is abnormal
   if (stressLevel > HIGH_STRESS_THRESHOLD || temperature > HIGH_TEMP_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    const highAlertDuration = now - Math.max(highTempStart || 0, highStressStart || 0, highHeartRateStart || 0);
-    if (highAlertDuration >= HIGH_ALERT_DURATION) {
-      document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
-    }
+    document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
   } else {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button
   }
 }
+
+// ======== PUSH ALERT FUNCTION ========
+function pushAlert(message) {
+  console.log('Pushing alert:', message);  // Debugging: Check if this is called
+
+  // Ensure alertBadge exists before proceeding
+  const alertBadge = document.getElementById("alertBadge");
+  if (!alertBadge) {
+    console.error('alertBadge not found!');
+    return;  // Exit if alertBadge is not found
+  }
+
+  // Increment alert count and update the badge
+  alertCount++;  
+  alertBadge.style.display = "inline-block";  // Ensure the alert count badge is visible
+  alertBadge.textContent = alertCount;  // Update the alert count displayed
+
+  // Ensure alertsList is found
+  const alertsList = document.getElementById("alertsList");
+  if (!alertsList) {
+    console.error('alertsList not found!');
+    return;  // Exit if alertsList is not found
+  }
+
+  // Create a new alert item
+  const alertItem = document.createElement("div");
+  alertItem.className = "card alert";
+  alertItem.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
+
+  // Check if "No alerts yet" message exists and remove it
+  const mutedText = alertsList.querySelector(".muted");
+  if (mutedText) {
+    mutedText.remove();  // Remove the "No alerts yet" text
+  }
+
+  // Prepend the new alert item to the alerts list
+  alertsList.prepend(alertItem);
+
+  // Always make sure the alerts section is visible when there are alerts
+  alertsList.style.display = "block";  
+
+  // Optional: Scroll to the top of the alert list for visibility
+  alertsList.scrollTop = 0;
+}
+
 // ======== SIMULATION TOOL ========
 // Simulate and push the latest data
 function simulateData() {
@@ -361,4 +382,5 @@ function simulateFiveMinutesPassed() {
 }
 window.simulateData = simulateData;
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
 
