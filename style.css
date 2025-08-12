@@ -238,29 +238,58 @@ body {
 }
 
 /* For mobile view */
+/* For mobile view */
 @media (max-width: 768px) {
-  .wellness-box {
-    width: 100%; /* Full width for each box on small screens */
-    margin: 5px 0;
-  }
-
-  .temperature-display {
-    font-size: 14px;
-    text-align: center; /* Center the text */
-  }
-
+  /* Make the status container more organized vertically */
   .status {
-    font-size: 0.5em;
+    display: block;  /* Display status as a block element */
+    font-size: 1.2em; /* Slightly smaller text size */
     padding: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 12px; /* Add space between status blocks */
+    text-align: left; /* Align text to the left */
   }
 
-  /* Additional mobile fix for large status texts */
+  /* Ensure the label text is separated from status */
   .status-normal, .status-high {
-    width: 90%; /* Allow some margin on sides */
-    margin: 0 auto; /* Center status text */
-    font-size: 0.5em; /* Slightly reduce font size on small screens */
+    width: 100%; /* Take up full width */
+    margin: 5px 0; /* Add space between the status text */
+    font-size: 1.1em; /* Slightly smaller text for mobile */
   }
+
+  /* Styling for the status section */
+  .status-label {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 5px; /* Space between label and the status text */
+  }
+
+  /* Adjust the status block containers */
+  .wellness-box {
+    width: 100%; /* Full width for mobile */
+    margin: 10px 0; /* Add margin for spacing */
+    padding: 15px;
+  }
+
+  .wellness-box p {
+    font-size: 1.2em; /* Adjust font size for wellness boxes */
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .wellness-box span {
+    display: block; /* Make the span elements block-level to ensure they are below the labels */
+    font-size: 1.1em;
+  }
+
+  /* Adjust the layout of the wellness data */
+  .wellness-data {
+    display: flex;
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: flex-start; /* Align items to the left */
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
 
   /* Ensure the caregiver button fits on smaller screens */
   #caregiverButton button {
@@ -291,6 +320,7 @@ header h1::before {
   vertical-align: middle;
   font-size: 40px;
 }
+
 
 
 
