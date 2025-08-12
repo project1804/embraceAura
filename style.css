@@ -52,7 +52,7 @@ body {
   background: linear-gradient(135deg, #ffe0b2, #ffb74d);
   color: #333;
 }
-/* Caregiver Wellness Overview */
+/* Wellness Overview Styling */
 .caregiver-panel .wellness-overview {
   background: #ffffff;
   border-radius: 12px;
@@ -60,8 +60,9 @@ body {
   padding: 30px;
   margin-top: 30px;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center; /* Ensures content is centered */
+  gap: 20px; /* Adds space between wellness boxes */
 }
 
 .caregiver-panel .wellness-box {
@@ -70,11 +71,11 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 28%;
-  transition: background 0.3s ease;
+  width: 28%; /* Each box takes up 28% of the row on large screens */
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background 0.3s ease;
 }
 
 .caregiver-panel .wellness-box:hover {
@@ -99,20 +100,22 @@ body {
   color: #888;
 }
 
-/* Ensure it’s responsive for mobile */
+/* For mobile view */
 @media (max-width: 768px) {
+  /* Stack wellness boxes vertically on mobile */
   .caregiver-panel .wellness-overview {
-    flex-direction: column; /* Stack wellness boxes vertically on mobile */
+    flex-direction: column; /* Stacks items vertically */
     align-items: center;
+    gap: 10px; /* Adds space between wellness boxes */
   }
 
   .caregiver-panel .wellness-box {
-    width: 80%; /* Make wellness boxes more responsive */
-    margin: 10px 0;
+    width: 80%; /* Full width for wellness boxes on mobile */
+    margin: 10px 0; /* Adds margin for spacing */
   }
 
   .caregiver-panel .wellness-box i {
-    font-size: 3em; /* Slightly smaller icons on mobile */
+    font-size: 3em; /* Adjust icon size for mobile */
   }
 
   .caregiver-panel .wellness-box p {
@@ -120,9 +123,10 @@ body {
   }
 
   .caregiver-panel .wellness-box span {
-    font-size: 1.1em;
+    font-size: 1.1em; /* Adjust font size for mobile */
   }
 }
+
 
 .card {
   background: rgba(255, 255, 255, 0.9);
@@ -391,6 +395,7 @@ header h1::before {
   vertical-align: middle;
   font-size: 40px;
 }
+
 
 
 
