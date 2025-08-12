@@ -145,28 +145,73 @@
     </audio>
   </div>
 
-  <!-- CAREGIVER DASHBOARD -->
-  <div id="caregiverPanel" class="panel caregiver-panel">
-    <div class="card">
-      <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
-      <h2>Caregiver Dashboard</h2>
-      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
-      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
-      <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
-      <small id="careUpdated">Updated: --</small>
-      
-    </div>
-
-    <div class="card">
-      <h3><i class="fas fa-bell"></i> Alerts <span id="alertBadge" class="badge" style="display:none;">0</span></h3>
-      <div id="alertsList" class="alerts">
-        <div class="muted">No alerts yet.</div>
-      </div>
-      <button onclick="markAllHandled()">Mark All Handled</button>
-      <button onclick="clearAlerts()">Clear Alerts</button>
-      <button onclick="callNow()">Call Now</button>
-    </div>
+<!-- CAREGIVER DASHBOARD -->
+<div id="caregiverPanel" class="panel caregiver-panel">
+  <div class="card">
+    <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
+    <h2>Caregiver Dashboard</h2>
+    <p class="subtext">Monitoring Health Data</p>
   </div>
+
+  <!-- Wellness Overview for Caregiver Dashboard -->
+  <div class="card wellness-overview">
+    <h3><i class="fas fa-leaf"></i> Wellness Overview</h3>
+    <div class="wellness-data">
+      <div class="wellness-box">
+        <i class="fas fa-heartbeat"></i>
+        <p>Heart Rate</p>
+        <span id="careHR">-- bpm</span>
+      </div>
+      <div class="wellness-box">
+        <i class="fas fa-brain"></i>
+        <p>Stress Level</p>
+        <span id="careStress">--</span>
+      </div>
+      <div class="wellness-box">
+        <i class="fas fa-thermometer-half"></i>
+        <p>Temperature</p>
+        <span id="careTemp">-- °C</span>
+      </div>
+    </div>
+    <p>
+      Temperature Status: 
+      <span id="careTempStatus" class="status status-normal">
+        <i class="fas fa-check-circle"></i> Normal
+      </span> 
+      &nbsp; | &nbsp;
+      
+      Stress Status: 
+      <span id="careStressStatus" class="status status-normal">
+        <i class="fas fa-check-circle"></i> Normal
+      </span> 
+      &nbsp; | &nbsp;
+      
+      Heart Rate Status: 
+      <span id="careHeartRateStatus" class="status status-normal">
+        <i class="fas fa-check-circle"></i> Normal
+      </span>
+    </p>
+    <small id="careUpdated">Updated: --</small>
+  </div>
+
+  <div class="card">
+    <h3><i class="fas fa-chart-line"></i> Health Data Trends</h3>
+    <canvas id="careHealthChart" style="width:100%;height:240px;"></canvas>
+  </div>
+
+  <!-- Alerts Section -->
+  <div class="card">
+    <h3><i class="fas fa-bell"></i> Alerts <span id="alertBadge" class="badge" style="display:none;">0</span></h3>
+    <div id="alertsList" class="alerts">
+      <div class="muted">No alerts yet.</div>
+    </div>
+    <button onclick="markAllHandled()">Mark All Handled</button>
+    <button onclick="clearAlerts()">Clear Alerts</button>
+    <button onclick="callNow()">Call Now</button>
+  </div>
+
+</div>
+
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -191,4 +236,5 @@
   </script>
 </body>
 </html>
+
 
