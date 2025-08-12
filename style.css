@@ -242,6 +242,7 @@ body {
 
   .temperature-display {
     font-size: 14px;
+    text-align: center; /* Center the text */
   }
 
   .status {
