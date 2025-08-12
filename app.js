@@ -299,3 +299,66 @@ function checkAlerts(data) {
     document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button
   }
 }
+// ======== SIMULATION TOOL ========
+// Simulate and push the latest data
+function simulateData() {
+  const data = {
+    temperature: parseFloat(simTemp.value) || 37.0,
+    heartRate: parseInt(simHeart.value) || 80,
+    stressLevel: parseInt(simStress.value) || 20,
+    timestamp: Date.now()
+  };
+
+  // Update latestReading with simulated data
+  latestReading = {
+    temperature: data.temperature,
+    heartRate: data.heartRate,
+    stressLevel: data.stressLevel,
+    timestamp: data.timestamp
+  };
+
+  // If simPush is checked, push to Firebase
+  if (simPush.checked) {
+    db.ref("sensorData").set(latestReading);
+  } else {
+    // Local simulation: update UI and set latestReading
+    updateMomDashboard(latestReading);
+    updateCaregiverDashboard(latestReading);
+    checkAlerts(latestReading, true); // simulation mode
+    // Update chart instantly with simulated data
+    if (healthChart) {
+      updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, latestReading.timestamp);
+    }
+  }
+}
+
+// Simulate 5 minutes passed with adjusted data
+function simulateFiveMinutesPassed() {
+  const data = {
+    temperature: parseFloat(simTemp.value) || 37.0,
+    heartRate: parseInt(simHeart.value) || 80,
+    stressLevel: parseInt(simStress.value) || 20,
+    timestamp: Date.now() - HIGH_ALERT_DURATION // Pretend this was recorded 5 min ago
+  };
+
+  // Force the simulation timers to look as if they started 5 minutes ago
+  simHighTempStart = Date.now() - HIGH_ALERT_DURATION;
+  simHighStressStart = Date.now() - HIGH_ALERT_DURATION;
+  simHighHeartRateStart = Date.now() - HIGH_ALERT_DURATION;
+
+  // Update the UI and latestReading (sampler will add next minute)
+  updateMomDashboard(data);
+  updateCaregiverDashboard(data);
+  latestReading = data;
+
+  // Add immediate chart point with the older timestamp so it appears on timeline
+  if (healthChart) {
+    updateHealthChart(data.temperature, data.heartRate, data.stressLevel, data.timestamp);
+  }
+
+  // Run the normal simulation alert check which will now pass
+  checkAlerts(data, true);
+}
+window.simulateData = simulateData;
+window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
