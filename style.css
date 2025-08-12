@@ -1,324 +1,294 @@
 /* General Styling */
-body {
-  font-family: 'Arial Rounded MT Bold', sans-serif;
-  background: #fffaf5;
-  margin: 0;
-  padding: 20px;
-}
+    /* General Styling */
+    body {
+      font-family: 'Arial Rounded MT Bold', sans-serif;
+      background: #fffaf5;
+      margin: 0;
+      padding: 20px;
+    }
 
-/* Navigation bar */
-.navbar {
-  background: #ffe0b2;
-  padding: 10px;
-  text-align: center;
-}
+    /* Navigation bar */
+    .navbar {
+      background: #ffe0b2;
+      padding: 10px;
+      text-align: center;
+    }
 
-.navbar button {
-  background: #ffcc80;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 5px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
+    .navbar button {
+      background: #ffcc80;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
 
-.navbar button:hover {
-  background: #ffb74d;
-}
+    .navbar button:hover {
+      background: #ffb74d;
+    }
 
-/* Panels */
-.panel {
-  display: none;
-  padding: 20px;
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-}
+    /* Panels */
+    .panel {
+      display: none;
+      padding: 20px;
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+    }
 
-.panel.active {
-  display: block;
-}
+    .panel.active {
+      display: block;
+    }
 
-/* Mom panel - purple gradient */
-.mom-panel {
-  background: linear-gradient(135deg, #e1bee7, #ba68c8);
-  color: #222;
-}
+    /* Mom panel - purple gradient */
+    .mom-panel {
+      background: linear-gradient(135deg, #e1bee7, #ba68c8);
+      color: #222;
+    }
 
-/* Caregiver panel - orange gradient */
-.caregiver-panel {
-  background: linear-gradient(135deg, #ffe0b2, #ffb74d);
-  color: #333;
-}
+    /* Caregiver panel - orange gradient */
+    .caregiver-panel {
+      background: linear-gradient(135deg, #ffe0b2, #ffb74d);
+      color: #333;
+    }
 
-.card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  padding: 20px;
-  margin: 15px 0;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
-  animation: fadeIn 0.4s ease;
-}
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 15px 0;
+      box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 0.4s ease;
+    }
 
-/* Fading animation for cards */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* Fading animation for cards */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-/* Wellness Overview Styling */
-.wellness-overview {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: all 0.3s ease;
-  font-size: 1.2em;
-  text-align: center;
-  border: 2px solid #ddd; /* Adds a subtle border */
-}
+    /* Wellness Overview Styling */
+    .wellness-overview {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      font-size: 1.2em;
+      text-align: center;
+      border: 2px solid #ddd; /* Adds a subtle border */
+    }
 
-.wellness-overview:hover {
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-  transform: scale(1.02);
-}
+    .wellness-overview:hover {
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+      transform: scale(1.02);
+    }
 
-/* Wellness Overview Header */
-.wellness-overview h3 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: #4a148c;
-  font-weight: bold;
-  text-align: center;
-  font-family: 'Arial Rounded MT Bold', sans-serif;
-}
+    /* Wellness Overview Header */
+    .wellness-overview h3 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #4a148c;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Arial Rounded MT Bold', sans-serif;
+    }
 
-/* Wellness Data Styling */
-.wellness-data {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
+    /* Wellness Data Styling */
+    .wellness-data {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
 
-.wellness-box {
-  background: #f3f4f6;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 28%;
-  margin: 10px;
-  transition: background 0.3s ease;
-}
+    .wellness-box {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 28%;
+      margin: 10px;
+      transition: background 0.3s ease;
+    }
 
-.wellness-box:hover {
-  background: #e1f5fe;
-}
+    .wellness-box:hover {
+      background: #e1f5fe;
+    }
 
-.wellness-box i {
-  font-size: 3.5em; /* Larger icon size */
-  margin-bottom: 10px;
-  color: #FF7043;
-}
+    .wellness-box i {
+      font-size: 3.5em; /* Larger icon size */
+      margin-bottom: 10px;
+      color: #FF7043;
+    }
 
-.wellness-box p {
-  font-size: 1.4em;
-  color: #333;
-  font-weight: bold;
-}
+    .wellness-box p {
+      font-size: 1.4em;
+      color: #333;
+      font-weight: bold;
+    }
 
-.wellness-box span {
-  display: block;
-  font-size: 1.2em;
-  margin-top: 5px;
-  color: #888;
-}
+    .wellness-box span {
+      display: block;
+      font-size: 1.2em;
+      margin-top: 5px;
+      color: #888;
+    }
 
-/* Mood Support Styling */
-.mood-support {
-  background: #e3f2fd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-}
+    /* Mood Support Styling */
+    .mood-support {
+      background: #e3f2fd;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
 
-.mood-section {
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #e1f5fe;
-}
+    .mood-section {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: #e1f5fe;
+    }
 
-.mood-section button {
-  background: #81d4fa;
-}
+    .mood-section button {
+      background: #81d4fa;
+    }
 
-.mood-section button:hover {
-  background: #4fc3f7;
-}
+    .mood-section button:hover {
+      background: #4fc3f7;
+    }
 
-/* Icon Styling */
-.mood-section i {
-  font-size: 2em;
-  margin-right: 10px;
-}
+    /* Icon Styling */
+    .mood-section i {
+      font-size: 2em;
+      margin-right: 10px;
+    }
 
-/* Call caregiver button styling */
-#caregiverButton button {
-  background: #ffb74d;
-  padding: 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 1.2em;
-  color: white;
-  border: none;
-  transition: background 0.3s ease;
-}
+    /* Call caregiver button styling */
+    #caregiverButton button {
+      background: #ffb74d;
+      padding: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.2em;
+      color: white;
+      border: none;
+      transition: background 0.3s ease;
+    }
 
-#caregiverButton button:hover {
-  background: #ff8c00;
-}
+    #caregiverButton button:hover {
+      background: #ff8c00;
+    }
 
-/* Temperature text fix for mobile view */
-.temperature-display {
-  font-size: 16px;
-  word-wrap: break-word;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; /* Prevents the text from wrapping */
-  padding: 5px;
-}
+    /* Temperature text fix for mobile view */
+    .temperature-display {
+      font-size: 16px;
+      word-wrap: break-word;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; /* Prevents the text from wrapping */
+      padding: 5px;
+    }
 
-/* Status Text Styling: Normal vs High */
-.status {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 12px;
-  transition: background 0.3s ease;
-}
+    /* Status Text Styling: Normal vs High */
+    .status {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      transition: background 0.3s ease;
+    }
 
-.status-normal {
-  color: #4caf50; /* Green for normal */
-  background-color: #dcedc8; /* Light green background */
-}
+    .status-normal {
+      color: #4caf50; /* Green for normal */
+      background-color: #dcedc8; /* Light green background */
+    }
 
-.status-high {
-  color: #e53935; /* Red for high */
-  background-color: #ffebee; /* Light red background */
-}
+    .status-high {
+      color: #e53935; /* Red for high */
+      background-color: #ffebee; /* Light red background */
+    }
 
-.status i {
-  margin-right: 8px;
-}
+    .status i {
+      margin-right: 8px;
+    }
 
-/* Icons for Normal/High Status */
-.status-normal i {
-  color: #4caf50; /* Green icon */
-}
+    /* Icons for Normal/High Status */
+    .status-normal i {
+      color: #4caf50; /* Green icon */
+    }
 
-.status-high i {
-  color: #e53935; /* Red icon */
-}
+    .status-high i {
+      color: #e53935; /* Red icon */
+    }
 
-/* For mobile view */
-@media (max-width: 768px) {
-  .wellness-box {
-    width: 45%;
-    margin: 5px;
-  }
+    /* For mobile view */
+    @media (max-width: 768px) {
+      .wellness-box {
+        width: 45%;
+        margin: 5px;
+      }
 
-  .temperature-display {
-    font-size: 14px;
-  }
+      .temperature-display {
+        font-size: 14px;
+      }
 
-  /* Status Text Styling: Normal vs High */
-.status {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 12px;
-  transition: background 0.3s ease;
-  display: inline-block; /* Keeps the status in line */
-  margin: 5px 0;
-}
+      .status {
+        font-size: 1.2em;
+        padding: 8px;
+      }
+    }
 
-.status-normal {
-  color: #4caf50; /* Green for normal */
-  background-color: #dcedc8; /* Light green background */
-}
+    /* For mobile view */
+    @media (max-width: 768px) {
+      .wellness-box {
+        width: 45%;
+        margin: 5px;
+      }
 
-.status-high {
-  color: #e53935; /* Red for high */
-  background-color: #ffebee; /* Light red background */
-}
+      .temperature-display {
+        font-size: 14px;
+      }
 
-.status i {
-  margin-right: 8px;
-  font-size: 1.5em; /* Icon size */
-  vertical-align: middle;
-}
+      .status {
+        font-size: 1.2em;
+        padding: 8px;
+      }
+    }
 
-/* Icons for Normal/High Status */
-.status-normal i {
-  color: #4caf50; /* Green icon */
-}
+    /* Header with App Name */
+    header {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #f3f4f6;
+    }
 
-.status-high i {
-  color: #e53935; /* Red icon */
-}
+    header h1 {
+      font-size: 2.5rem;
+      color: #333;
+      font-weight: bold;
+    }
 
-/* For mobile view */
-@media (max-width: 768px) {
-  .status {
-    font-size: 1.2em;
-    padding: 8px;
-  }
-}
-  /* Temperature text fix for mobile view */
-.temperature-display {
-  font-size: 16px;
-  word-wrap: break-word;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; /* Prevents the text from wrapping */
-  padding: 5px;
-  text-align: center; /* Centers the text inside the box */
-  font-weight: bold;
-  color: #333;
-}
-
-/* For mobile view */
-@media (max-width: 768px) {
-  .wellness-box {
-    width: 45%;
-    margin: 5px;
-  }
-
-  .temperature-display {
-    font-size: 14px;
-  }
-
-  .status {
-    font-size: 1.2em;
-    padding: 8px;
-  }
-}
+    /* Add the heart icon with the app name */
+    header h1::before {
+      content: url('/mnt/data/f61b8195-b52e-4351-b4ad-5e278c4fac6c.png'); /* Heart icon */
+      margin-right: 15px;
+      vertical-align: middle;
+      width: 40px; /* Adjust size as necessary */
+      height: 40px;
+    }
 
 
-}
 
