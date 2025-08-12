@@ -282,13 +282,17 @@
     }
 
     /* Add the heart icon with the app name */
-    header h1::before {
-      content: url('/mnt/data/f61b8195-b52e-4351-b4ad-5e278c4fac6c.png'); /* Heart icon */
-      margin-right: 15px;
-      vertical-align: middle;
-      width: 40px; /* Adjust size as necessary */
-      height: 40px;
-    }
+   /* Add the heart icon with the app name */
+header h1::before {
+  content: '\f004'; /* Unicode for the Font Awesome heart icon */
+  font-family: 'Font Awesome 5 Free'; /* Font Awesome font */
+  font-weight: 900; /* Make it bold */
+  color: #9b59b6; /* Purple color for the heart */
+  margin-right: 15px;
+  vertical-align: middle;
+  font-size: 40px; /* Adjust size as necessary */
+}
+
 
 
 
