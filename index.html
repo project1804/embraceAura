@@ -150,10 +150,25 @@
     <div class="card">
       <img src="caregiver-illustration.jpg" alt="Caregiver Illustration" class="illustration">
       <h2>Caregiver Dashboard</h2>
-      <p><i class="fas fa-thermometer-half"></i> Temperature: <span id="careTemp">-- °C</span></p>
-      <p><i class="fas fa-heartbeat"></i> Heart Rate: <span id="careHR">-- bpm</span></p>
-      <p><i class="fas fa-brain"></i> Stress Level: <span id="careStress">--</span></p>
-      <small id="careUpdated">Updated: --</small>
+      <div class="wellness-overview">
+      <div class="wellness-box">
+        <i class="fas fa-heartbeat"></i>
+        <p>Heart Rate</p>
+        <span id="careHR">37 BPM</span>
+      </div>
+      <div class="wellness-box">
+        <i class="fas fa-brain"></i>
+        <p>Stress Level</p>
+        <span id="careStress">20</span>
+      </div>
+      <div class="wellness-box">
+        <i class="fas fa-thermometer-half"></i>
+        <p>Temperature</p>
+        <span id="careTemp">2147483647.2 °C</span>
+      </div>
+    </div>
+    <small id="careUpdated">Updated: 7:32:30</small>
+  </div>
       
     </div>
 
@@ -191,3 +206,4 @@
   </script>
 </body>
 </html>
+
