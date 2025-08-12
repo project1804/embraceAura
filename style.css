@@ -1,298 +1,280 @@
 /* General Styling */
-    /* General Styling */
-    body {
-      font-family: 'Arial Rounded MT Bold', sans-serif;
-      background: #fffaf5;
-      margin: 0;
-      padding: 20px;
-    }
-
-    /* Navigation bar */
-    .navbar {
-      background: #ffe0b2;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .navbar button {
-      background: #ffcc80;
-      border: none;
-      padding: 10px 20px;
-      margin: 0 5px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s ease;
-    }
-
-    .navbar button:hover {
-      background: #ffb74d;
-    }
-
-    /* Panels */
-    .panel {
-      display: none;
-      padding: 20px;
-      min-height: 100vh;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    /* Mom panel - purple gradient */
-    .mom-panel {
-      background: linear-gradient(135deg, #e1bee7, #ba68c8);
-      color: #222;
-    }
-
-    /* Caregiver panel - orange gradient */
-    .caregiver-panel {
-      background: linear-gradient(135deg, #ffe0b2, #ffb74d);
-      color: #333;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 15px 0;
-      box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
-      animation: fadeIn 0.4s ease;
-    }
-
-    /* Fading animation for cards */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Wellness Overview Styling */
-    .wellness-overview {
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.3s ease;
-      font-size: 1.2em;
-      text-align: center;
-      border: 2px solid #ddd; /* Adds a subtle border */
-    }
-
-    .wellness-overview:hover {
-      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-      transform: scale(1.02);
-    }
-
-    /* Wellness Overview Header */
-    .wellness-overview h3 {
-      font-size: 2em;
-      margin-bottom: 20px;
-      color: #4a148c;
-      font-weight: bold;
-      text-align: center;
-      font-family: 'Arial Rounded MT Bold', sans-serif;
-    }
-
-    /* Wellness Data Styling */
-    .wellness-data {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .wellness-box {
-      background: #f3f4f6;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 28%;
-      margin: 10px;
-      transition: background 0.3s ease;
-    }
-
-    .wellness-box:hover {
-      background: #e1f5fe;
-    }
-
-    .wellness-box i {
-      font-size: 3.5em; /* Larger icon size */
-      margin-bottom: 10px;
-      color: #FF7043;
-    }
-
-    .wellness-box p {
-      font-size: 1.4em;
-      color: #333;
-      font-weight: bold;
-    }
-
-    .wellness-box span {
-      display: block;
-      font-size: 1.2em;
-      margin-top: 5px;
-      color: #888;
-    }
-
-    /* Mood Support Styling */
-    .mood-support {
-      background: #e3f2fd;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .mood-section {
-      margin-bottom: 15px;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background: #e1f5fe;
-    }
-
-    .mood-section button {
-      background: #81d4fa;
-    }
-
-    .mood-section button:hover {
-      background: #4fc3f7;
-    }
-
-    /* Icon Styling */
-    .mood-section i {
-      font-size: 2em;
-      margin-right: 10px;
-    }
-
-    /* Call caregiver button styling */
-    #caregiverButton button {
-      background: #ffb74d;
-      padding: 15px;
-      border-radius: 12px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1.2em;
-      color: white;
-      border: none;
-      transition: background 0.3s ease;
-    }
-
-    #caregiverButton button:hover {
-      background: #ff8c00;
-    }
-
-    /* Temperature text fix for mobile view */
-    .temperature-display {
-      font-size: 16px;
-      word-wrap: break-word;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; /* Prevents the text from wrapping */
-      padding: 5px;
-    }
-
-    /* Status Text Styling: Normal vs High */
-    .status {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 12px;
-      transition: background 0.3s ease;
-    }
-
-    .status-normal {
-      color: #4caf50; /* Green for normal */
-      background-color: #dcedc8; /* Light green background */
-    }
-
-    .status-high {
-      color: #e53935; /* Red for high */
-      background-color: #ffebee; /* Light red background */
-    }
-
-    .status i {
-      margin-right: 8px;
-    }
-
-    /* Icons for Normal/High Status */
-    .status-normal i {
-      color: #4caf50; /* Green icon */
-    }
-
-    .status-high i {
-      color: #e53935; /* Red icon */
-    }
-
-    /* For mobile view */
-    @media (max-width: 768px) {
-      .wellness-box {
-        width: 45%;
-        margin: 5px;
-      }
-
-      .temperature-display {
-        font-size: 14px;
-      }
-
-      .status {
-        font-size: 1.2em;
-        padding: 8px;
-      }
-    }
-
-    /* For mobile view */
-    @media (max-width: 768px) {
-      .wellness-box {
-        width: 45%;
-        margin: 5px;
-      }
-
-      .temperature-display {
-        font-size: 14px;
-      }
-
-      .status {
-        font-size: 1.2em;
-        padding: 8px;
-      }
-    }
-
-    /* Header with App Name */
-    header {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #f3f4f6;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      color: #333;
-      font-weight: bold;
-    }
-
-    /* Add the heart icon with the app name */
-   /* Add the heart icon with the app name */
-header h1::before {
-  content: '\f004'; /* Unicode for the Font Awesome heart icon */
-  font-family: 'Font Awesome 5 Free'; /* Font Awesome font */
-  font-weight: 900; /* Make it bold */
-  color: #9b59b6; /* Purple color for the heart */
-  margin-right: 15px;
-  vertical-align: middle;
-  font-size: 40px; /* Adjust size as necessary */
+body {
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  background: #fffaf5;
+  margin: 0;
+  padding: 20px;
 }
 
+/* Navigation bar */
+.navbar {
+  background: #ffe0b2;
+  padding: 10px;
+  text-align: center;
+}
 
+.navbar button {
+  background: #ffcc80;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
 
+.navbar button:hover {
+  background: #ffb74d;
+}
 
+/* Panels */
+.panel {
+  display: none;
+  padding: 20px;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.panel.active {
+  display: block;
+}
+
+/* Mom panel - purple gradient */
+.mom-panel {
+  background: linear-gradient(135deg, #e1bee7, #ba68c8);
+  color: #222;
+}
+
+/* Caregiver panel - orange gradient */
+.caregiver-panel {
+  background: linear-gradient(135deg, #ffe0b2, #ffb74d);
+  color: #333;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease;
+}
+
+/* Fading animation for cards */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Wellness Overview Styling */
+.wellness-overview {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  font-size: 1.2em;
+  text-align: center;
+  border: 2px solid #ddd; /* Adds a subtle border */
+}
+
+.wellness-overview:hover {
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+/* Wellness Overview Header */
+.wellness-overview h3 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #4a148c;
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+}
+
+/* Wellness Data Styling */
+.wellness-data {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.wellness-box {
+  background: #f3f4f6;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 28%;
+  margin: 10px;
+  transition: background 0.3s ease;
+}
+
+.wellness-box:hover {
+  background: #e1f5fe;
+}
+
+.wellness-box i {
+  font-size: 3.5em; /* Larger icon size */
+  margin-bottom: 10px;
+  color: #FF7043;
+}
+
+.wellness-box p {
+  font-size: 1.4em;
+  color: #333;
+  font-weight: bold;
+}
+
+.wellness-box span {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 5px;
+  color: #888;
+}
+
+/* Mood Support Styling */
+.mood-support {
+  background: #e3f2fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.mood-section {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #e1f5fe;
+}
+
+.mood-section button {
+  background: #81d4fa;
+}
+
+.mood-section button:hover {
+  background: #4fc3f7;
+}
+
+/* Icon Styling */
+.mood-section i {
+  font-size: 2em;
+  margin-right: 10px;
+}
+
+/* Call caregiver button styling */
+#caregiverButton button {
+  background: #ffb74d;
+  padding: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.2em;
+  color: white;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+#caregiverButton button:hover {
+  background: #ff8c00;
+}
+
+/* Temperature text fix for mobile view */
+.temperature-display {
+  font-size: 16px;
+  word-wrap: break-word;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevents the text from wrapping */
+  padding: 5px;
+}
+
+/* Status Text Styling: Normal vs High */
+.status {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.status-normal {
+  color: #4caf50; /* Green for normal */
+  background-color: #dcedc8; /* Light green background */
+}
+
+.status-high {
+  color: #e53935; /* Red for high */
+  background-color: #ffebee; /* Light red background */
+}
+
+.status i {
+  margin-right: 8px;
+}
+
+/* Icons for Normal/High Status */
+.status-normal i {
+  color: #4caf50; /* Green icon */
+}
+
+.status-high i {
+  color: #e53935; /* Red icon */
+}
+
+/* For mobile view */
+@media (max-width: 768px) {
+  .wellness-box {
+    width: 100%; /* Full width for each box on small screens */
+    margin: 5px 0;
+  }
+
+  .temperature-display {
+    font-size: 14px;
+  }
+
+  .status {
+    font-size: 1.2em;
+    padding: 8px;
+  }
+
+  /* Ensure the caregiver button fits on smaller screens */
+  #caregiverButton button {
+    font-size: 1.1em;
+    padding: 12px;
+  }
+}
+
+/* Header with App Name */
+header {
+  text-align: center;
+  padding: 20px 0;
+  background-color: #f3f4f6;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+header h1::before {
+  content: '\f004'; /* Unicode for the Font Awesome heart icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: #9b59b6;
+  margin-right: 15px;
+  vertical-align: middle;
+  font-size: 40px;
+}
