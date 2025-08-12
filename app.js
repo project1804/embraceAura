@@ -268,13 +268,16 @@ function checkAlerts(data) {
     hideSuggestions();
   }
 
-  // Show caregiver button when any reading is abnormal
-  if (stressLevel > HIGH_STRESS_THRESHOLD || temperature > HIGH_TEMP_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
-    document.getElementById("caregiverButton").style.display = "block"; // Show caregiver button
-  } else {
-    document.getElementById("caregiverButton").style.display = "none"; // Hide caregiver button
-  }
+    // Show caregiver button when any reading is abnormal
+    if (stressLevel > HIGH_STRESS_THRESHOLD || temperature > HIGH_TEMP_THRESHOLD || heartRate > HIGH_HEARTRATE_THRESHOLD) {
+    document.getElementById("caregiverButton").style.setProperty('display', 'block', 'important');  // Force button visibility
+      } else {
+    document.getElementById("caregiverButton").style.setProperty('display', 'none', 'important');  // Hide the button if no abnormal readings
+    }
+
 }
+
+
 
 // ======== PUSH ALERT FUNCTION ========
 function pushAlert(message) {
@@ -382,5 +385,6 @@ function simulateFiveMinutesPassed() {
 }
 window.simulateData = simulateData;
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
 
 
