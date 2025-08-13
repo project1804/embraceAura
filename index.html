@@ -118,12 +118,16 @@
       <div class="mood-section" id="breathingSection">
         
     <h4>Guided Breathing</h4>
-    <!-- Play/Pause button for breathing.mp3 -->
-    <button onclick="toggleBreathing()"><i class="fas fa-play"></i> Play/Pause Breathing</button>
-    <!-- Add the breathing audio element -->
-    <audio id="breathingAudio">
-      <source src="breathing.mp3" type="audio/mpeg">
-    </audio>
+<!-- Play/Pause button for video -->
+<button onclick="toggleBreathing()">
+  <i class="fas fa-play"></i> Play/Pause Breathing Video
+</button>
+
+<!-- Add the video element -->
+<video id="breathingVideo" width="640" height="360" controls>
+  <source src="breathing_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
   </div>
       <div class="mood-section" id="affirmationSection">
         <h4>Affirmation</h4>
@@ -207,22 +211,21 @@
     }
 
     function toggleBreathing() {
-    const breathingAudio = document.getElementById("breathingAudio");
-    const playButton = document.querySelector("#breathingSection button i");
+  var breathingVideo = document.getElementById('breathingVideo');
+  var playButton = document.querySelector('button i');
 
-    // Show the alert when the breathing exercise starts
-    if (breathingAudio.paused) {
-      breathingAudio.play();  // Play the audio
-      playButton.classList.remove('fa-play');
-      playButton.classList.add('fa-pause');  // Change the icon to pause
-
-      alert("Breathing exercise started!");  // Show the alert when starting the exercise
-    } else {
-      breathingAudio.pause();  // Pause the audio
-      playButton.classList.remove('fa-pause');
-      playButton.classList.add('fa-play');  // Change the icon back to play
-    }
+  if (breathingVideo.paused) {
+    breathingVideo.play();  // Play the video
+    playButton.classList.remove('fa-play');
+    playButton.classList.add('fa-pause');  // Change the icon to pause
+    alert("Breathing exercise started!");  // Show the alert when starting the exercise
+  } else {
+    breathingVideo.pause();  // Pause the video
+    playButton.classList.remove('fa-pause');
+    playButton.classList.add('fa-play');  // Change the icon back to play
   }
+}
+
 
     function showAffirmation() {
       alert("My positive, beneficial energy makes me powerful.");  // Placeholder functionality; replace with actual logic
@@ -243,6 +246,7 @@
   </script>
 </body>
 </html>
+
 
 
 
