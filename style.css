@@ -399,6 +399,27 @@ header h1::before {
   font-size: 40px;
 }
 
+/* Make video responsive */
+video {
+  width: 100%;      /* Make the video fill its container */
+  height: auto;     /* Maintain aspect ratio */
+  max-width: 640px; /* Limit the maximum width to prevent it from being too large */
+  margin-top: 10px; /* Add some spacing on top */
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  video {
+    width: 100%;   /* Ensure the video fills the container on mobile */
+    max-width: 100%; /* Make sure it doesn't exceed the screen size */
+  }
+}
+
+
 
 
 
