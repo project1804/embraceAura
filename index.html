@@ -198,13 +198,20 @@
   <script>
      // Define the functions
     function toggleMusic() {
-      const audio = document.getElementById("calmAudio");
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    }
+  const audio = document.getElementById("calmAudio");
+  const selectedMusic = document.getElementById("musicChoice").value;
+
+  // Update the audio source if it doesn't match the selected one
+  if (audio.src.indexOf(selectedMusic) === -1) {
+    audio.src = selectedMusic;
+  }
+
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+}
 
     function toggleBreathing() {
   var breathingVideo = document.getElementById('breathingVideo');
@@ -242,6 +249,7 @@
   </script>
 </body>
 </html>
+
 
 
 
