@@ -210,6 +210,32 @@ db.ref("BPM").on("value", snapshot => {
   }
 });
 
+// Listener for Stress
+db.ref("Stress").on("value", snapshot => {
+  const stress = snapshot.val(); // Get the stress level from Firebase
+  if (stress !== null) {
+    latestReading = {
+      temperature: latestReading?.temperature || 36.7, // keep previous/default temperature
+      heartRate: latestReading?.heartRate || 80,       // keep previous/default heart rate
+      stressLevel: stress,                             // update with real stress value
+      timestamp: Date.now()
+    };
+
+    // Update UI with live stress value
+    updateMomDashboard(latestReading);
+    updateCaregiverDashboard(latestReading);
+
+    // Update chart instantly
+    if (healthChart) {
+      updateHealthChart(latestReading.temperature, latestReading.heartRate, latestReading.stressLevel, latestReading.timestamp);
+    }
+
+    // Check alerts with new stress value
+    checkAlerts(latestReading);
+  }
+});
+
+
 // ======== UPDATE UI FUNCTIONS ========
 // Update the Mom's Dashboard
 function updateMomDashboard(data) {
@@ -393,6 +419,7 @@ function simulateFiveMinutesPassed() {
 }
 window.simulateData = simulateData;
 window.simulateFiveMinutesPassed = simulateFiveMinutesPassed;
+
 
 
 
